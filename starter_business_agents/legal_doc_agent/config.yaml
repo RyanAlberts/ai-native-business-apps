@@ -1,0 +1,12 @@
+# Legal Document Generator — provider config
+provider: claude
+model: claude-sonnet-4-6
+auth_mode: subscription
+temperature: 0.1          # legal docs should be highly deterministic
+max_tokens: 8192          # full operating agreements can run long
+
+mcp_servers: {}
+allowed_tools: []
+
+extra:
+  max_turns: 6

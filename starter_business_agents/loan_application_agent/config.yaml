@@ -1,0 +1,12 @@
+# Loan & Funding Application Agent — provider config
+provider: claude
+model: claude-sonnet-4-6
+auth_mode: subscription
+temperature: 0.2          # advice should be conservative and consistent
+max_tokens: 4096
+
+mcp_servers: {}
+allowed_tools: []
+
+extra:
+  max_turns: 6
