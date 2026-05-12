@@ -1,0 +1,71 @@
+name: 💡 Feature request / new agent
+description: Propose a new agent, harness, skill, provider, or improvement.
+title: "[feat] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Founder-task agents (incorporation, finance, legal, ops) are the
+        highest-leverage additions. New harness patterns and provider
+        adapters are also welcome. See `CONTRIBUTING.md`.
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of contribution?
+      options:
+        - "New agent (single, in starter_business_agents/)"
+        - "New agent (multi-stage, in advanced_business_agents/)"
+        - "New harness (parallel, loop, hierarchical, ...)"
+        - "New skill (reusable Tool)"
+        - "New provider adapter (Codex CLI, etc.)"
+        - "Improvement to existing agent"
+        - "Docs / walkthrough"
+        - "Other"
+    validations:
+      required: true
+
+  - type: textarea
+    id: founder-problem
+    attributes:
+      label: Founder problem this solves
+      description: One paragraph — what specific boring-but-necessary task does this automate? Who is the target founder?
+      placeholder: |
+        Founders incorporating in a state with a sales-tax nexus need to
+        register with that state's DOR within 30 days of first sale. Most
+        miss this and get hit with backdated penalties. An agent that
+        figures out where you have nexus and generates the registration
+        package would save hours of research + form-filling.
+    validations:
+      required: true
+
+  - type: textarea
+    id: sketch
+    attributes:
+      label: Sketch of the agent
+      description: What inputs does it take? What output does it produce? Any tools / external data needed?
+      placeholder: |
+        Inputs: business state, list of states where you've made sales,
+        approximate revenue per state, business type.
+        Output: per-state registration recommendation, deadlines, fees,
+        application packets.
+        External: needs to know each state's nexus thresholds (training data
+        is fine for v1; WebSearch tool optional for current-year confirmation).
+
+  - type: dropdown
+    id: framework
+    attributes:
+      label: Single-agent or multi-agent?
+      options:
+        - "Single-agent (one prompt + tools)"
+        - "Multi-agent sequential (use SequentialHarness)"
+        - "Multi-agent parallel (would require new ParallelHarness — also useful!)"
+        - "Multi-agent custom"
+        - "Unsure"
+
+  - type: textarea
+    id: anything-else
+    attributes:
+      label: Anything else?
+      description: Related work, prior art, open questions.
