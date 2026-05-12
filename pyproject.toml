@@ -46,9 +46,20 @@ dev = [
 Homepage = "https://github.com/RyanAlberts/ai-native-business-apps"
 Issues = "https://github.com/RyanAlberts/ai-native-business-apps/issues"
 
+[project.scripts]
+agent = "core.cli:main"
+
 [tool.setuptools.packages.find]
-include = ["core*", "_template*"]
+include = [
+    "core*",
+    "_template*",
+    "starter_business_agents*",
+    "advanced_business_agents*",
+]
 exclude = ["tests*", "tutorials*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.yaml", "*.md", "*.jsonl", "*.txt"]
 
 [tool.ruff]
 line-length = 100
