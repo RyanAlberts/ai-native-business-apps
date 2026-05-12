@@ -1,0 +1,76 @@
+name: 🐛 Bug report
+description: An agent doesn't run, the auth guard fires wrongly, the harness misbehaves, etc.
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. The more concrete you are, the faster we can land a fix.
+
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Which agent / module?
+      options:
+        - "_template (idea validator)"
+        - "starter_business_agents/incorporation_agent"
+        - "advanced_business_agents/.../business_plan_implementation_manager"
+        - "core/llm/* (provider adapter)"
+        - "core/harness/* (orchestration)"
+        - "scripts/parity_run.py"
+        - "Other (note in description)"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: provider
+    attributes:
+      label: Provider
+      options:
+        - "claude (subscription)"
+        - "claude (api key)"
+        - "openai"
+        - "gemini"
+        - "xai"
+        - "ollama"
+        - "codex (stub)"
+        - "n/a — not provider-specific"
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you expect, what did you see instead?
+      placeholder: |
+        Expected: the incorporation agent returns a markdown plan.
+        Got: RuntimeError "ANTHROPIC_API_KEY is set..." despite running inside Claude Code.
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: How to reproduce
+      placeholder: |
+        1. Open the repo in Claude Code
+        2. Run `python -m starter_business_agents.incorporation_agent.agent "..."`
+        3. Observe the error
+      render: shell
+    validations:
+      required: true
+
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: OS, Python version, IDE if relevant.
+      placeholder: macOS 15, Python 3.11, Claude Code 2.1.119
+
+  - type: textarea
+    id: extras
+    attributes:
+      label: Anything else?
+      description: Logs, env-var state (redact keys), screenshots, links.
