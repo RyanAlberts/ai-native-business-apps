@@ -1,0 +1,12 @@
+# Incorporation Agent — provider config
+provider: claude
+model: claude-sonnet-4-6
+auth_mode: subscription
+temperature: 0.2          # incorporation advice should be deterministic
+max_tokens: 4096
+
+mcp_servers: {}
+allowed_tools: []
+
+extra:
+  max_turns: 6             # single-turn task; no tool loops needed

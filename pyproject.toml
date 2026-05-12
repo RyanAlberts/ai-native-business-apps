@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-native-business-apps"
+version = "0.1.0"
+description = "Hand-built, provider-agnostic AI agents for founders bootstrapping a startup."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Ryan Alberts", email = "ryan.a.alberts@gmail.com" }]
+keywords = ["ai", "agents", "startup", "claude", "openai", "gemini", "founder"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "claude-agent-sdk>=0.1.72",
+    "anyio>=4.0",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0",
+    "streamlit>=1.30",
+]
+
+[project.optional-dependencies]
+openai = ["openai>=1.30"]
+gemini = ["google-genai>=0.3"]
+xai = ["openai>=1.30"]
+ollama = ["ollama>=0.3"]
+all-providers = [
+    "openai>=1.30",
+    "google-genai>=0.3",
+    "ollama>=0.3",
+]
+dev = [
+    "ruff>=0.6",
+    "pytest>=8.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/RyanAlberts/ai-native-business-apps"
+Issues = "https://github.com/RyanAlberts/ai-native-business-apps/issues"
+
+[tool.setuptools.packages.find]
+include = ["core*", "_template*"]
+exclude = ["tests*", "tutorials*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
