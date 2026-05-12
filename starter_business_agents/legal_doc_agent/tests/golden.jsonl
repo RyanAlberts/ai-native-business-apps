@@ -1,0 +1,5 @@
+{"id": "g1", "prompt": "Draft a Mutual NDA. Parties: Founder LLC (Delaware) and AcmeCorp Inc. (New York). Term: 2 years from disclosure. Governing law: Delaware. Software industry, no special regulatory triggers."}
+{"id": "g2", "prompt": "Single-member LLC Operating Agreement. Business: WyoTech LLC, formed in Wyoming. Owner: Jane Founder, sole member, manager-managed. No outside investors planned for 24 months."}
+{"id": "g3", "prompt": "Independent Contractor Agreement. Hiring party: Acme Labs LLC (Delaware, operating in California). Contractor: Sam Designer (California freelancer). Project: 60-day brand redesign at $150/hour, payable net-15. Work-for-hire clause needed."}
+{"id": "g4", "prompt": "Privacy Policy for a US-based SaaS app (operating from Delaware, serving customers in EU). We collect email, IP, name, payment info via Stripe. We don't sell data. No HIPAA/COPPA exposure."}
+{"id": "g5", "prompt": "Cofounder Agreement / Equity Split Memo. Two cofounders, 50-50 split, 4-year vesting with 1-year cliff. Both contribute time only (no capital). Need acceleration clause for involuntary termination."}

@@ -1,0 +1,13 @@
+# Website Launch Team — provider config
+provider: claude
+model: claude-sonnet-4-6
+auth_mode: subscription
+temperature: 0.5          # some creative latitude for naming + copy
+max_tokens: 6144
+
+mcp_servers: {}
+# Optionally enable WebSearch for competitor/domain-availability sniff checks
+allowed_tools: []
+
+extra:
+  max_turns: 12

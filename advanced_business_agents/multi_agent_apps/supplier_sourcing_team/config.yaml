@@ -1,0 +1,14 @@
+# Supplier Sourcing Team — provider config
+provider: claude
+model: claude-sonnet-4-6
+auth_mode: subscription
+temperature: 0.3
+max_tokens: 6144
+
+mcp_servers: {}
+# Enable WebSearch for stage 1 to sniff for real suppliers; Claude-only.
+allowed_tools:
+  - WebSearch
+
+extra:
+  max_turns: 12

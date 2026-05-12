@@ -101,7 +101,7 @@ which tool a contributor is in, they get a consistent picture of the conventions
 |---|---|---|---|
 | 🏛️ | **[Incorporation Agent](starter_business_agents/incorporation_agent/)** | Pick entity type, state, registered agent; prepare EIN + filing docs. | claude ✅ |
 | 📋 | **[Business Plan Implementation Manager](advanced_business_agents/multi_agent_apps/business_plan_implementation_manager/)** | Sequential 4-stage pipeline: market research → SWOT → strategy → 90-day roadmap. | claude ✅ |
-| 💡 | **[Business Idea Validator (template)](_template/)** | Validate a startup idea in 60 seconds — problem, MVP, risks, first experiment. | claude ✅ |
+| 💰 | **[Loan & Funding Application Agent](starter_business_agents/loan_application_agent/)** | Match SBA loans / grants / CDFIs to your business; get an application checklist. | claude ✅ |
 
 ## 📑 Table of Contents
 
@@ -116,22 +116,26 @@ which tool a contributor is in, they get a consistent picture of the conventions
 
 ## 📂 Starter Business Agents
 
-Single-agent apps that automate one founder task. Copy any folder to
-extend — each is self-contained.
+Single-agent apps that automate one founder task. Run with `agent <short-name>`
+or copy the folder to extend — each is self-contained.
 
-- 🏛️ **[Incorporation Agent](starter_business_agents/incorporation_agent/)** — entity-type + state selection, registered-agent recs, EIN prep. `claude ✅`
-- *(Wave 3) Loan & Funding Application Agent — SBA readiness, grant matching, app packages.*
-- *(Wave 3) Legal Doc Generator — operating agreement, NDA, IP assignment, ToS, privacy policy.*
-- *(Wave 3) Bank & Insurance Setup Agent — business banking comparison, GL/E&O recs.*
-- *(Wave 3) Compliance & Tax Setup Agent — sales-tax nexus, state filings, annual calendar.*
+| | Agent | What it does | Short name |
+|---|---|---|---|
+| 🏛️ | [Incorporation Agent](starter_business_agents/incorporation_agent/) | Entity type + state + registered agent + filing checklist. | `incorporation` |
+| 💰 | [Loan & Funding Application Agent](starter_business_agents/loan_application_agent/) | Match SBA / microloan / grant / CDFI programs, prep package. | `loan` |
+| 📜 | [Legal Document Generator](starter_business_agents/legal_doc_agent/) | Operating agreement, NDA, IP assignment, ToS, contractor agreement. | `legal-doc` |
+| 🏦 | [Bank & Insurance Setup Agent](starter_business_agents/bank_insurance_agent/) | Business banking comparison + insurance policies you actually need. | `bank-insurance` |
+| 📋 | [Compliance & Tax Setup Agent](starter_business_agents/compliance_tax_agent/) | Sales-tax nexus, state registrations, annual calendar, bookkeeping. | `compliance-tax` |
 
 ## 🚀 Advanced Business Agents
 
-Multi-agent orchestration — pipelines, teams, sequential or parallel.
+Multi-agent orchestration — sequential pipelines built on `core.SequentialHarness`.
 
-- 📋 **[Business Plan Implementation Manager](advanced_business_agents/multi_agent_apps/business_plan_implementation_manager/)** — sequential 4-stage: market research → SWOT → strategy → 90-day roadmap. `claude ✅`
-- *(Wave 3) Website Launch Team — domain, brand, hosting, launch copy & checklist.*
-- *(Wave 3) Supplier Sourcing Team — discovery, vetting, RFP, comparison matrix.*
+| | Agent | Pipeline | Short name |
+|---|---|---|---|
+| 📋 | [Business Plan Implementation Manager](advanced_business_agents/multi_agent_apps/business_plan_implementation_manager/) | Market Research → SWOT → Strategy → 90-day Roadmap | `business-plan` |
+| 🌐 | [Website Launch Team](advanced_business_agents/multi_agent_apps/website_launch_team/) | Brand & Domain → Site Architecture → Copy & Design → Launch Checklist | `website-launch` |
+| 🏭 | [Supplier Sourcing Team](advanced_business_agents/multi_agent_apps/supplier_sourcing_team/) | Sourcing → Vetting → RFP Draft → Comparison Matrix | `supplier-sourcing` |
 
 ## 🛠️ Agent Harnesses
 
@@ -156,9 +160,15 @@ Narrative tutorials that explain how each agent works and how to customize it.
 For v1 they live in-repo as `WALKTHROUGH.md` files; a hosted tutorial site
 arrives in v1.1.
 
-- [Building Your First AI-Native Business Agent](_template/WALKTHROUGH.md)
+- [Building Your First AI-Native Business Agent](_template/WALKTHROUGH.md) (template)
 - [Incorporation Agent walkthrough](starter_business_agents/incorporation_agent/WALKTHROUGH.md)
+- [Loan & Funding walkthrough](starter_business_agents/loan_application_agent/WALKTHROUGH.md)
+- [Legal Document Generator walkthrough](starter_business_agents/legal_doc_agent/WALKTHROUGH.md)
+- [Bank & Insurance Setup walkthrough](starter_business_agents/bank_insurance_agent/WALKTHROUGH.md)
+- [Compliance & Tax Setup walkthrough](starter_business_agents/compliance_tax_agent/WALKTHROUGH.md)
 - [Business Plan Implementation Manager walkthrough](advanced_business_agents/multi_agent_apps/business_plan_implementation_manager/WALKTHROUGH.md)
+- [Website Launch Team walkthrough](advanced_business_agents/multi_agent_apps/website_launch_team/WALKTHROUGH.md)
+- [Supplier Sourcing Team walkthrough](advanced_business_agents/multi_agent_apps/supplier_sourcing_team/WALKTHROUGH.md)
 
 ## 🔌 Providers
 
