@@ -1,0 +1,1 @@
+# Business Plan Implementation Manager uses only the root project deps.

@@ -1,0 +1,29 @@
+# =============================================================================
+# Agent configuration — Business Idea Validator (template)
+# =============================================================================
+# Swap providers and models here without touching code.
+# Supported: claude (default, subscription) | openai | gemini | xai | ollama | codex
+# =============================================================================
+
+provider: claude
+model: claude-sonnet-4-6
+auth_mode: subscription   # claude only; ignored by other providers
+
+# Sampling
+temperature: 0.3
+max_tokens: 4096
+
+# MCP servers (external tool integrations). Examples:
+#   firecrawl:
+#     command: npx
+#     args: ["-y", "firecrawl-mcp"]
+mcp_servers: {}
+
+# Pre-allowed tools (Claude built-ins, MCP namespaces). Examples:
+#   - "WebSearch"
+#   - "mcp__firecrawl__*"
+allowed_tools: []
+
+# Provider-specific extras
+extra:
+  max_turns: 12

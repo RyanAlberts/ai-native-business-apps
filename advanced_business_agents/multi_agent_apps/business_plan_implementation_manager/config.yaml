@@ -1,0 +1,16 @@
+# Business Plan Implementation Manager — provider config
+provider: claude
+model: claude-sonnet-4-6
+auth_mode: subscription
+temperature: 0.4          # some creative latitude for strategy work
+max_tokens: 6144          # multi-stage; later stages need room
+
+mcp_servers: {}
+
+# Claude built-in tools enabled across all stages. WebSearch lets the market
+# research stage pull current data. Remove or change per provider.
+allowed_tools:
+  - WebSearch
+
+extra:
+  max_turns: 12

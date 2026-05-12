@@ -1,0 +1,52 @@
+# Cursor rules — ai-native-business-apps
+
+This file is auto-loaded by Cursor as repo-wide AI context.
+Full conventions live in `AGENTS.md` and `CLAUDE.md`; this file is the
+short version.
+
+## Repo purpose
+Hand-built, Apache-2.0 AI agents for founders bootstrapping a startup.
+Each agent automates one boring-but-necessary task (incorporation, business
+plan, legal docs, etc.). Provider-agnostic via `core.LLMClient` abstraction.
+
+## What I'm probably asking you to do
+
+1. **Add a new agent** → copy `_template/` to the right folder, customize
+   prompts.py / tools.py / config.yaml / agent.py. Always write
+   README/WALKTHROUGH/PARITY/golden.jsonl. See `AGENTS.md` for the full checklist.
+
+2. **Add a provider** → subclass `core.LLMClient` in `core/llm/<name>.py`,
+   wire it into `factory.py::get_llm`. Keep adapters under ~50 lines.
+
+3. **Edit a prompt** → it's in `prompts.py` as a named constant. Don't
+   touch agent.py for prompt tweaks.
+
+4. **Switch provider for an agent** → edit `config.yaml::provider`. No
+   code changes.
+
+## Hard rules (don't violate without asking)
+
+- **No new framework deps.** No LangChain, LangGraph, CrewAI, Agno, LiteLLM.
+  Our provider abstraction is intentionally tiny.
+- **Apache-2.0 header on every Python file we author.**
+- **Provider-agnostic agents.** Never `from openai import ...` from agent
+  code — always go through `core.get_llm()`.
+- **Subscription default for Claude.** Never paste `ANTHROPIC_API_KEY` into
+  `.env.example`.
+- **No autonomous git commits.** Show changes; let me commit.
+- **Python 3.11+**, async-first.
+
+## Useful commands
+
+```bash
+pip install -e .                       # editable install
+python -m _template.agent              # run template agent (CLI)
+streamlit run _template/app.py         # run template agent (UI)
+python scripts/parity_run.py <module>  # capture golden outputs
+```
+
+## When you're stuck
+
+Read `AGENTS.md` and `CLAUDE.md`. Read `_template/agent.py` for the
+canonical agent shape. Read `core/llm/claude.py` for the canonical
+provider adapter shape.

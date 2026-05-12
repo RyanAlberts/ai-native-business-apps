@@ -1,0 +1,12 @@
+AI-Native Business Apps
+Copyright 2026 Ryan Alberts
+
+This product includes software developed by Ryan Alberts and contributors.
+Licensed under the Apache License, Version 2.0.
+
+Structural inspiration: The repo's category layout and README structure
+draw heavily on the conventions established by `awesome-llm-apps`
+(https://github.com/Shubhamsaboo/awesome-llm-apps) by Shubham Saboo,
+which has set a strong example for open agent repos. No code or
+prompts are copied from that repository; every agent, harness, skill,
+and app here is original work, hand-built and end-to-end tested.
