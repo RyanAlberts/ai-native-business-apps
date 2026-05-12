@@ -39,17 +39,40 @@ who want AI baked in from day 0.
 
 ## 🚀 Quick Start
 
+Two lines. One to install, one to run any agent:
+
+```bash
+pipx install git+https://github.com/RyanAlberts/ai-native-business-apps.git
+agent incorporation
+```
+
+That's it. `agent` is an interactive launcher that auto-discovers every agent
+in the repo and opens its Streamlit UI. Try:
+
+```bash
+agent                              # interactive picker
+agent list                         # list all available agents
+agent business-plan                # launch any agent by short name
+agent inco --cli "Solo founder in Texas, SaaS for plumbers."  # one-shot CLI
+```
+
+### Prefer to develop locally?
+
 ```bash
 git clone https://github.com/RyanAlberts/ai-native-business-apps.git
-cd ai-native-business-apps
-pip install -e .
-cp .env.example .env       # only fill keys for non-Claude providers
-unset ANTHROPIC_API_KEY    # use your Claude Max subscription (free)
-streamlit run _template/app.py
+cd ai-native-business-apps && pip install -e .
+agent
 ```
+
+### Auth
 
 If `claude` (the Claude Code CLI) is logged into your Claude Max / Pro
 subscription, you're done — no API key needed for any Claude-based agent.
+The subscription guard automatically recognizes Claude Code and Cursor's
+OAuth env markers, so running from inside those IDEs Just Works.
+
+For non-Claude providers, copy `.env.example` to `.env` and fill the
+provider key you want (`OPENAI_API_KEY`, `GOOGLE_API_KEY`, etc.).
 
 ## 🖥️ Running from your IDE
 
