@@ -21,11 +21,13 @@ nexus thresholds.
 
 | ID | Prompt | claude | openai | gemini |
 |---|---|---|---|---|
-| g1 | DE LLC, CA operation, Shopify+Amazon skincare $200k | not yet run | — | — |
-| g2 | TX S-Corp consulting, 3 employees, services only | not yet run | — | — |
-| g3 | NY sole prop coaching, $80k yr 1, all customers in NY | not yet run | — | — |
-| g4 | FL LLC food truck + catering, $300k, 2 employees | not yet run | — | — |
-| g5 | DE C-Corp B2B SaaS, $1.2M, contractors only, no inventory | not yet run | — | — |
+| g1 | DE LLC, CA operation, Shopify+Amazon skincare $200k | ✅ verified | — | — |
+| g2 | TX S-Corp consulting, 3 employees, services only | ✅ verified | — | — |
+| g3 | NY sole prop coaching, $80k yr 1, all customers in NY | ✅ verified | — | — |
+| g4 | FL LLC food truck + catering, $300k, 2 employees | ✅ verified | — | — |
+| g5 | DE C-Corp B2B SaaS, $1.2M, contractors only, no inventory | ✅ verified | — | — |
+
+Claude baseline at `tests/baselines/claude-2026-05-12.md` (~75KB; 5 cases). Re-run with `python scripts/parity_run.py starter_business_agents.compliance_tax_agent`.
 
 ## 3. UX parity
 
@@ -46,7 +48,7 @@ nexus thresholds.
 
 | Provider | Verdict |
 |---|---|
-| claude | **verified by build smoke test** |
+| claude | **verified** — full 5-prompt golden run captured |
 | openai | working (untested) |
 | gemini | working (untested) |
 | xai | community-supported |

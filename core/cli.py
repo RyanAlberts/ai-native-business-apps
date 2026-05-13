@@ -18,7 +18,6 @@ from __future__ import annotations
 import argparse
 import asyncio
 import importlib
-import os
 import sys
 from pathlib import Path
 
@@ -111,8 +110,40 @@ def _print_list(agents: dict[str, dict]) -> None:
     print("      agent <name> --cli ...   (one-shot CLI)\n")
 
 
+def _pick_free_port(preferred: int = 8501, max_tries: int = 50) -> int:
+    """Return `preferred` if free; else the next free port within max_tries."""
+    import socket
+    for port in range(preferred, preferred + max_tries):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            try:
+                s.bind(("127.0.0.1", port))
+            except OSError:
+                continue
+            return port
+    return preferred  # fall back; let streamlit error if truly stuck
+
+
+def _wait_for_port(port: int, timeout: float = 10.0) -> bool:
+    """Poll the port until it accepts connections, or timeout."""
+    import socket
+    import time
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.settimeout(0.5)
+            try:
+                s.connect(("127.0.0.1", port))
+                return True
+            except (ConnectionRefusedError, OSError):
+                time.sleep(0.2)
+    return False
+
+
 def _launch_streamlit(agent: dict) -> int:
     import shutil
+    import subprocess
+    import webbrowser
+
     streamlit = shutil.which("streamlit")
     if not streamlit:
         print("error: streamlit not found. Install with: pip install streamlit")
@@ -121,8 +152,39 @@ def _launch_streamlit(agent: dict) -> int:
     if not app_path.exists():
         print(f"error: no app.py at {app_path}")
         return 1
-    os.execvp(streamlit, [streamlit, "run", str(app_path)])
-    return 0  # unreachable
+
+    port = _pick_free_port(8501)
+    url = f"http://localhost:{port}"
+
+    # Run streamlit headless so its own auto-open doesn't race with ours.
+    cmd = [
+        streamlit,
+        "run",
+        str(app_path),
+        "--server.port",
+        str(port),
+        "--server.headless",
+        "true",
+        "--browser.gatherUsageStats",
+        "false",
+    ]
+    print(f"Starting {agent['short']} on {url} ...")
+    proc = subprocess.Popen(cmd)
+
+    try:
+        if _wait_for_port(port, timeout=10.0):
+            webbrowser.open(url)
+            print(f"Opened in your browser: {url}")
+        else:
+            print(f"Server didn't respond in 10s — open manually: {url}")
+        return proc.wait()
+    except KeyboardInterrupt:
+        proc.terminate()
+        try:
+            return proc.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            return proc.wait()
 
 
 def _run_cli(agent: dict, user_input: str) -> int:

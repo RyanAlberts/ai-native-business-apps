@@ -16,11 +16,13 @@
 
 | ID | Prompt | claude | openai | gemini |
 |---|---|---|---|---|
-| g1 | Mutual NDA, DE LLC <> NY Inc., 2-yr term | not yet run | not run | not run |
-| g2 | Single-member LLC Operating Agreement, Wyoming | not yet run | not run | not run |
-| g3 | Independent Contractor Agreement for a CA designer | not yet run | not run | not run |
-| g4 | Privacy Policy for a US SaaS handling EU users | not yet run | not run | not run |
-| g5 | Cofounder Agreement / 50-50 equity split memo | not yet run | not run | not run |
+| g1 | Mutual NDA, DE LLC <> NY Inc., 2-yr term | ✅ verified | not run | not run |
+| g2 | Single-member LLC Operating Agreement, Wyoming | ✅ verified | not run | not run |
+| g3 | Independent Contractor Agreement for a CA designer | ✅ verified | not run | not run |
+| g4 | Privacy Policy for a US SaaS handling EU users | ✅ verified | not run | not run |
+| g5 | Cofounder Agreement / 50-50 equity split memo | ✅ verified | not run | not run |
+
+Claude baseline at `tests/baselines/claude-2026-05-12.md` (~118KB; 5 cases). Re-run with `python scripts/parity_run.py starter_business_agents.legal_doc_agent` — output goes to `tests/runs/` (gitignored) for diff against the baseline.
 
 ## 3. UX parity (Streamlit)
 
@@ -42,7 +44,7 @@
 
 | Provider | Verdict |
 |---|---|
-| claude | **verified by build smoke test** |
+| claude | **verified** — full 5-prompt golden run captured |
 | openai | **working** (untested) |
 | gemini | **working** (untested) |
 | xai | community-supported |

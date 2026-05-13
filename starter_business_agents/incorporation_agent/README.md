@@ -9,14 +9,30 @@ Takes a free-text founder description (business idea, home state, cofounder
 count, funding plans, hiring plans, liability concerns) and returns a markdown
 recommendation with:
 
+- Prominent disclaimer at the TOP (not buried at the bottom)
 - Entity type pick (LLC / S-Corp election / C-Corp / Sole Prop / Partnership)
 - State of formation (defaults to home state; recommends Delaware/Wyoming only
   when there's a real reason)
-- Numbered 5–10 step filing checklist
-- 2–3 registered-agent options with cost ranges
-- Estimated total cost table
+- Numbered 5–10 step filing checklist with EMBEDDED state-specific portal URLs
+- Key documents & artifacts table — what to file, definitions, trade-offs,
+  and follow-up questions the founder can paste back into the agent to drill
+  down (e.g. "Draft me an Operating Agreement clause for unanimous consent")
+- Expanded registered-agent options across three categories (act as your own
+  RA, traditional services like Northwest / LegalZoom / Harbor Compliance,
+  digital-first services like Doola / Stripe Atlas / Bizee) with a
+  comparison table
+- Estimated total cost table grounded in state-specific data
 - Pitfalls specific to the founder's situation
-- Disclaimer (not legal advice; consult CPA/attorney)
+- Business name availability check — if the founder proposes a specific
+  name, the agent surfaces the official Secretary of State name-search URL
+  for verification (no scraping; the founder does the lookup)
+
+## Data sources
+
+- `state_portals.py` — hand-curated portal URLs, filing fees, and notes for
+  all 50 states + DC, plus federal links (IRS EIN, FinCEN BOI, USPTO
+  trademark search). Single source of truth — update there and every Tool
+  and prompt picks up the change.
 
 ## Run
 
