@@ -128,6 +128,7 @@ or copy the folder to extend — each is self-contained.
 | | Agent | What it does | Short name |
 |---|---|---|---|
 | 🏛️ | [Incorporation Agent](starter_business_agents/incorporation_agent/) | Entity type + state + registered agent + filing checklist. | `incorporation` |
+| 📬 | [83(b) Election Agent](starter_business_agents/election_83b_agent/) | 30-day IRS §83(b) election letter + postmark deadline + service-center routing + calendar reminder. | `election-83b` |
 | 💰 | [Loan & Funding Application Agent](starter_business_agents/loan_application_agent/) | Match SBA / microloan / grant / CDFI programs, prep package. | `loan` |
 | 📜 | [Legal Document Generator](starter_business_agents/legal_doc_agent/) | Operating agreement, NDA, IP assignment, ToS, contractor agreement. | `legal-doc` |
 | 🏦 | [Bank & Insurance Setup Agent](starter_business_agents/bank_insurance_agent/) | Business banking comparison + insurance policies you actually need. | `bank-insurance` |
@@ -168,6 +169,7 @@ arrives in v1.1.
 
 - [Building Your First AI-Native Business Agent](_template/WALKTHROUGH.md) (template)
 - [Incorporation Agent walkthrough](starter_business_agents/incorporation_agent/WALKTHROUGH.md)
+- [83(b) Election walkthrough](starter_business_agents/election_83b_agent/WALKTHROUGH.md)
 - [Loan & Funding walkthrough](starter_business_agents/loan_application_agent/WALKTHROUGH.md)
 - [Legal Document Generator walkthrough](starter_business_agents/legal_doc_agent/WALKTHROUGH.md)
 - [Bank & Insurance Setup walkthrough](starter_business_agents/bank_insurance_agent/WALKTHROUGH.md)

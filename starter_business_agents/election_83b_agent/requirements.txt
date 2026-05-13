@@ -1,0 +1,1 @@
+# No extras beyond pyproject.toml — this agent uses only stdlib + core.
