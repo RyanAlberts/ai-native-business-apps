@@ -1,0 +1,5 @@
+{"id": "g1", "prompt": "I just got a Delaware franchise tax bill for $85,165 and I'm panicking. We're a 12-month-old DE C-Corp. Certificate of incorporation authorized 10,000,000 shares of common stock at par value $0.0001. We've issued 8,000,000 shares to the two founders. Year-end gross assets were about $50,000 (mostly remaining seed cash). Is this bill real, or can I recompute?"}
+{"id": "g2", "prompt": "DE C-Corp, just closed Series A. 10M authorized, 10M issued, par $0.0001, total gross assets at year-end ~$10M. What do we owe? Auth method vs APVC?"}
+{"id": "g3", "prompt": "Newly-formed DE C-Corp — incorporated 3 months ago. Authorized 5,000 shares at par $0.001. Have NOT issued any shares to the founder yet (still negotiating cofounder split). Total assets are essentially the $89 incorporation fee. What do I owe?"}
+{"id": "g4", "prompt": "I formed a DE LLC last year (not a C-Corp). What is my Delaware franchise tax?"}
+{"id": "g5", "prompt": "DE C-Corp. Tried to be clever with the math: authorized 100,000,000 shares at par value $0.00001 each. Issued 1,000,000 shares to founder. Year-end assets ~$20,000. What does DE think I owe under each method?"}
