@@ -1,0 +1,12 @@
+# 83(b) Election Agent — provider config
+provider: claude
+model: claude-sonnet-4-6
+auth_mode: subscription
+temperature: 0.1   # Tax-procedure output — minimize creative variation.
+max_tokens: 6144
+
+mcp_servers: {}
+allowed_tools: []
+
+extra:
+  max_turns: 6
