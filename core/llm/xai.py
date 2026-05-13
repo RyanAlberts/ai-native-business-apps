@@ -4,10 +4,9 @@
 from __future__ import annotations
 
 import inspect
-import json
 import os
 
-from .base import LLMClient, LLMConfig, Tool
+from .base import LLMClient, LLMConfig, Tool, parse_tool_args
 
 
 class XAIClient(LLMClient):
@@ -72,10 +71,13 @@ class XAIClient(LLMClient):
                 if not tool:
                     result = f"unknown tool: {tc.function.name}"
                 else:
-                    args = json.loads(tc.function.arguments or "{}")
-                    raw = tool.handler(args)
-                    if inspect.isawaitable(raw):
-                        raw = await raw
-                    result = str(raw)
+                    args = parse_tool_args(tc.function.arguments, tc.function.name)
+                    if isinstance(args, str):
+                        result = args
+                    else:
+                        raw = tool.handler(args)
+                        if inspect.isawaitable(raw):
+                            raw = await raw
+                        result = str(raw)
                 messages.append({"role": "tool", "tool_call_id": tc.id, "content": result})
         return "Tool loop exceeded max_turns without final response."

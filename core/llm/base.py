@@ -3,12 +3,26 @@
 """LLMClient ABC and shared dataclasses."""
 from __future__ import annotations
 
+import json
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import Any, Awaitable, Callable, Union
 
 
 ToolHandler = Callable[[dict[str, Any]], Union[Any, Awaitable[Any]]]
+
+
+def parse_tool_args(raw: str | None, tool_name: str) -> dict[str, Any] | str:
+    """Parse JSON tool-call arguments from an LLM response.
+
+    Returns the parsed dict on success. On JSONDecodeError, returns an error
+    string the tool loop can hand back to the model as the tool result —
+    letting the model retry instead of crashing the agent.
+    """
+    try:
+        return json.loads(raw or "{}")
+    except json.JSONDecodeError as e:
+        return f"error: malformed JSON arguments for tool {tool_name!r}: {e}"
 
 
 @dataclass
