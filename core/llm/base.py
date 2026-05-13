@@ -12,17 +12,31 @@ from typing import Any, Awaitable, Callable, Union
 ToolHandler = Callable[[dict[str, Any]], Union[Any, Awaitable[Any]]]
 
 
-def parse_tool_args(raw: str | None, tool_name: str) -> dict[str, Any] | str:
-    """Parse JSON tool-call arguments from an LLM response.
+def parse_tool_args(raw: Any, tool_name: str) -> dict[str, Any] | str:
+    """Normalize tool-call arguments from any provider into a dict.
 
-    Returns the parsed dict on success. On JSONDecodeError, returns an error
-    string the tool loop can hand back to the model as the tool result —
-    letting the model retry instead of crashing the agent.
+    Accepts:
+      - JSON string (OpenAI / xAI shape)
+      - dict or dict-like object (Gemini / Ollama shape — and Ollama
+        sometimes hands back a JSON string instead, so both must work)
+      - None (no arguments supplied)
+
+    Returns the parsed dict on success. On JSONDecodeError or any
+    coercion failure, returns an error string the tool loop can hand back
+    to the model as the tool result — letting the model retry instead of
+    crashing the agent.
     """
+    if raw is None:
+        return {}
+    if isinstance(raw, str):
+        try:
+            return json.loads(raw or "{}")
+        except json.JSONDecodeError as e:
+            return f"error: malformed JSON arguments for tool {tool_name!r}: {e}"
     try:
-        return json.loads(raw or "{}")
-    except json.JSONDecodeError as e:
-        return f"error: malformed JSON arguments for tool {tool_name!r}: {e}"
+        return dict(raw)
+    except (TypeError, ValueError) as e:
+        return f"error: cannot coerce arguments for tool {tool_name!r} to dict: {e}"
 
 
 @dataclass

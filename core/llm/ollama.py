@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import inspect
 
-from .base import LLMClient, LLMConfig, Tool
+from .base import LLMClient, LLMConfig, Tool, parse_tool_args
 
 
 class OllamaClient(LLMClient):
@@ -66,9 +66,13 @@ class OllamaClient(LLMClient):
                 if not tool:
                     result = f"unknown tool: {fname}"
                 else:
-                    raw = tool.handler(dict(fargs))
-                    if inspect.isawaitable(raw):
-                        raw = await raw
-                    result = str(raw)
+                    args = parse_tool_args(fargs, fname)
+                    if isinstance(args, str):
+                        result = args
+                    else:
+                        raw = tool.handler(args)
+                        if inspect.isawaitable(raw):
+                            raw = await raw
+                        result = str(raw)
                 messages.append({"role": "tool", "content": result, "tool_name": fname})
         return "Tool loop exceeded max_turns without final response."

@@ -45,3 +45,35 @@ def test_json_array_is_not_a_dict_but_does_not_raise():
     # validation — but the agent stays alive.
     result = parse_tool_args("[1, 2, 3]", "t")
     assert result == [1, 2, 3]
+
+
+# --- dict-input path (Gemini / Ollama shapes) -------------------------
+
+
+def test_dict_input_passes_through_as_copy():
+    src = {"state": "CA"}
+    out = parse_tool_args(src, "t")
+    assert out == {"state": "CA"}
+    # Should be a copy — mutating the result doesn't leak back.
+    assert out is not src
+    out["state"] = "TX"
+    assert src["state"] == "CA"
+
+
+def test_dict_like_iterable_of_pairs_coerces():
+    # Gemini sometimes hands back a Mapping-like object that's iterable
+    # as (k, v) pairs but isn't a plain dict.
+    pairs = [("state", "CA"), ("city", "SF")]
+    assert parse_tool_args(pairs, "t") == {"state": "CA", "city": "SF"}
+
+
+def test_non_coercible_returns_error_string():
+    # An integer can't be coerced to a dict — must not crash.
+    result = parse_tool_args(42, "my_tool")
+    assert isinstance(result, str)
+    assert "my_tool" in result
+    assert "coerce" in result.lower()
+
+
+def test_empty_dict_passes_through():
+    assert parse_tool_args({}, "t") == {}

@@ -6,7 +6,7 @@ from __future__ import annotations
 import inspect
 import os
 
-from .base import LLMClient, LLMConfig, Tool
+from .base import LLMClient, LLMConfig, Tool, parse_tool_args
 
 
 class GeminiClient(LLMClient):
@@ -68,14 +68,17 @@ class GeminiClient(LLMClient):
             tool_responses = []
             for call in calls:
                 tool = tool_map.get(call.name)
-                args = dict(call.args or {})
                 if not tool:
                     out = f"unknown tool: {call.name}"
                 else:
-                    raw = tool.handler(args)
-                    if inspect.isawaitable(raw):
-                        raw = await raw
-                    out = raw
+                    args = parse_tool_args(call.args, call.name)
+                    if isinstance(args, str):
+                        out = args
+                    else:
+                        raw = tool.handler(args)
+                        if inspect.isawaitable(raw):
+                            raw = await raw
+                        out = raw
                 tool_responses.append(
                     gtypes.Part.from_function_response(
                         name=call.name,
