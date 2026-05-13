@@ -13,13 +13,12 @@ Two tools, both deterministic / no network calls:
     estimates + state-specific notes for the recommended state. The agent
     embeds these URLs directly in the output.
 
-Data lives in `state_portals.py`. Update there, not here.
+Data lives in `core/state_portals.py` (shared across agents). Update there, not here.
 """
 from __future__ import annotations
 
 from core import Tool
-
-from .state_portals import FEDERAL_PORTALS, STATE_PORTALS, get_state
+from core.state_portals import FEDERAL_PORTALS, STATE_PORTALS, get_state
 
 
 def _state_business_name_search(args: dict) -> dict:

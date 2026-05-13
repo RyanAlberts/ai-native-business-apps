@@ -88,8 +88,6 @@ tests/golden.jsonl
 4. Fill out `README.md`, `WALKTHROUGH.md`, `PARITY.md` (mark Claude
    `verified` only after running it).
 5. Add a row to the main `README.md`'s agent listing.
-6. **Do NOT commit autonomously.** Show the user what you've created and let
-   them stage + commit.
 
 ## Verification before declaring done
 
@@ -101,5 +99,4 @@ tests/golden.jsonl
 
 - Don't refactor `core/` to use LiteLLM or LangChain — provider abstraction
   is intentionally hand-rolled and lightweight.
-- Don't add CI / Docker / monorepo tooling in v1.
-- Don't auto-commit. The user has explicit rules about git autonomy.
+- Don't add Docker / monorepo tooling in v1.
