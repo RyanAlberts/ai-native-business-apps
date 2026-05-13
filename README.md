@@ -39,7 +39,7 @@ who want AI baked in from day 0.
 
 ## 🚀 Quick Start
 
-One line to install, one to run any agent in a streamlit app that runs in your browser:
+One line to install, one to run any agent in a Streamlit app that opens in your browser. (See [prerequisites](#-prerequisites) first if you're starting from scratch.)
 
 ```bash
 pipx install git+https://github.com/RyanAlberts/ai-native-business-apps.git
@@ -116,6 +116,7 @@ which tool a contributor is in, they get a consistent picture of the conventions
 - [🧰 Skills](#-skills)
 - [📱 LLM Apps](#-llm-apps)
 - [📚 Walkthroughs](#-walkthroughs)
+- [✅ Prerequisites](#-prerequisites)
 - [🔌 Providers](#-providers)
 - [🤝 Contributing](#-contributing)
 
@@ -174,6 +175,63 @@ arrives in v1.1.
 - [Business Plan Implementation Manager walkthrough](advanced_business_agents/multi_agent_apps/business_plan_implementation_manager/WALKTHROUGH.md)
 - [Website Launch Team walkthrough](advanced_business_agents/multi_agent_apps/website_launch_team/WALKTHROUGH.md)
 - [Supplier Sourcing Team walkthrough](advanced_business_agents/multi_agent_apps/supplier_sourcing_team/WALKTHROUGH.md)
+
+## ✅ Prerequisites
+
+The [Quick Start](#-quick-start) assumes three things are installed and ready.
+Most developers already have them; founders new to a terminal will need to
+spend ~10 minutes setting them up once.
+
+### 1. Python 3.11+
+
+| OS | Install |
+|---|---|
+| macOS | `brew install python@3.11` (install [Homebrew](https://brew.sh/) first if needed) |
+| Linux (Ubuntu/Debian) | `sudo apt install python3.11 python3.11-venv` |
+| Windows | Download from [python.org/downloads](https://www.python.org/downloads/) — check "Add Python to PATH" during install |
+
+Verify: `python3 --version` → should print `Python 3.11.x` or higher.
+
+### 2. pipx
+
+`pipx` installs CLI Python apps into isolated venvs so they don't pollute
+your system Python.
+
+| OS | Install |
+|---|---|
+| macOS | `brew install pipx && pipx ensurepath` |
+| Linux | `python3 -m pip install --user pipx && python3 -m pipx ensurepath` |
+| Windows | `python -m pip install --user pipx && python -m pipx ensurepath` |
+
+After `ensurepath`, restart your terminal. Verify: `pipx --version`.
+
+### 3. Auth for your provider
+
+**Option A — Claude Max subscription (preferred, free):** install the
+Claude Code CLI and log in.
+
+```bash
+npm install -g @anthropic-ai/claude-code   # requires Node.js — install from nodejs.org if needed
+claude                                     # walks you through OAuth login on first run
+```
+
+The agents in this repo automatically pick up your subscription auth from
+`claude`. No API key needed.
+
+**Option B — Bring your own API key:** copy `.env.example` to `.env` and
+fill the key for the provider you want (OpenAI, Gemini, etc.):
+
+```bash
+cp .env.example .env
+# then edit .env and uncomment OPENAI_API_KEY=sk-... (or GOOGLE_API_KEY, etc.)
+```
+
+For per-agent provider overrides, edit `<agent>/config.yaml::provider`.
+
+---
+
+Once those three are in place, the [Quick Start](#-quick-start) install
+command works.
 
 ## 🔌 Providers
 
