@@ -1,0 +1,2 @@
+# No extras beyond pyproject.toml.
+# WebSearch is provided by the Claude provider; nothing to install.

@@ -7,10 +7,11 @@ Exports:
     get_llm: factory returning an LLMClient for the configured provider
     LLMClient, LLMConfig, Tool: building blocks for agent code
     SequentialHarness, Stage: reusable multi-stage pipeline
+    ParallelHarness: fan-out N branches concurrently then synthesize
 """
 from .config import load_config
 from .llm import LLMClient, LLMConfig, Tool, get_llm
-from .harness import HarnessResult, SequentialHarness, Stage
+from .harness import HarnessResult, ParallelHarness, SequentialHarness, Stage
 
 __all__ = [
     "load_config",
@@ -19,6 +20,7 @@ __all__ = [
     "LLMConfig",
     "Tool",
     "SequentialHarness",
+    "ParallelHarness",
     "Stage",
     "HarnessResult",
 ]
