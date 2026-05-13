@@ -1,6 +1,6 @@
-# 🤖 AI-Native Business Apps
+# 🤖 AI-Native Business Apps - Build an AI-native business from Day 0.
 
-> **AI-native business apps you can actually run — clone, customize, incorporate.**
+> **Ready-to-Run AI Agents for entrepreneurs & founders. Replace dozens of SaaS products with your very own fleet of agents that use the subscription you already pay for (Claude/OpenAI/Gemini or open-source models). No API key required. **
 
 ![License](https://img.shields.io/badge/license-Apache--2.0-blue)
 ![Python](https://img.shields.io/badge/python-3.11%2B-green)
