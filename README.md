@@ -39,7 +39,7 @@ who want AI baked in from day 0.
 
 ## 🚀 Quick Start
 
-Two lines. One to install, one to run any agent:
+One line to install, one to run any agent in a streamlit app that runs in your browser:
 
 ```bash
 pipx install git+https://github.com/RyanAlberts/ai-native-business-apps.git
