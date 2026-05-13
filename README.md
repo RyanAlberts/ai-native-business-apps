@@ -46,8 +46,11 @@ pipx install git+https://github.com/RyanAlberts/ai-native-business-apps.git
 agent incorporation
 ```
 ---
+
 ![Quick start screenshot — `agent incorporation` running in Streamlit](docs/screenshots/quick-start.png)
+
 --- 
+
 That's it. `agent` is an interactive launcher that auto-discovers every agent
 in the repo and opens its Streamlit UI. Try:
 
