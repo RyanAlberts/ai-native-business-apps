@@ -145,6 +145,7 @@ Multi-agent orchestration — sequential pipelines built on `core.SequentialHarn
 | 📋 | [Business Plan Implementation Manager](advanced_business_agents/multi_agent_apps/business_plan_implementation_manager/) | Market Research → SWOT → Strategy → 90-day Roadmap | `business-plan` |
 | 🌐 | [Website Launch Team](advanced_business_agents/multi_agent_apps/website_launch_team/) | Brand & Domain → Site Architecture → Copy & Design → Launch Checklist | `website-launch` |
 | 🏭 | [Supplier Sourcing Team](advanced_business_agents/multi_agent_apps/supplier_sourcing_team/) | Sourcing → Vetting → RFP Draft → Comparison Matrix | `supplier-sourcing` |
+| ™️ | [Trademark Search Team](advanced_business_agents/multi_agent_apps/trademark_search_team/) | Federal TESS ∥ State SoS ∥ Common-Law ∥ Class ID → Synthesis (verdict + TEAS pre-fill + fee estimate) | `trademark-search` |
 
 ## 🛠️ Agent Harnesses
 
@@ -174,6 +175,7 @@ arrives in v1.1.
 - [83(b) Election walkthrough](starter_business_agents/election_83b_agent/WALKTHROUGH.md)
 - [Delaware Franchise Tax walkthrough](starter_business_agents/delaware_franchise_tax_agent/WALKTHROUGH.md)
 - [Worker Classification walkthrough](starter_business_agents/worker_classification_agent/WALKTHROUGH.md)
+- [Trademark Search Team walkthrough](advanced_business_agents/multi_agent_apps/trademark_search_team/WALKTHROUGH.md)
 - [Loan & Funding walkthrough](starter_business_agents/loan_application_agent/WALKTHROUGH.md)
 - [Legal Document Generator walkthrough](starter_business_agents/legal_doc_agent/WALKTHROUGH.md)
 - [Bank & Insurance Setup walkthrough](starter_business_agents/bank_insurance_agent/WALKTHROUGH.md)

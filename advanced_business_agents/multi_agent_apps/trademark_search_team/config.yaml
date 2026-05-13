@@ -1,0 +1,17 @@
+# Trademark Search Team — provider config
+provider: claude
+model: claude-sonnet-4-6
+auth_mode: subscription
+temperature: 0.2     # Research synthesis — slight room for connecting findings, but no creative leaps.
+max_tokens: 8192     # Synthesizer output is dense (verdict + table + pre-fill + deadlines).
+
+mcp_servers: {}
+
+# WebSearch is the critical capability — every research branch needs it
+# to pull real TESS / state-SoS / common-law / Nice-class data. Without
+# it, the agent will hallucinate trademark records (worse than no output).
+allowed_tools:
+  - WebSearch
+
+extra:
+  max_turns: 8
