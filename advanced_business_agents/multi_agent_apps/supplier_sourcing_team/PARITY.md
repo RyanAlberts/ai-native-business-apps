@@ -22,9 +22,11 @@ suppliers. Other stages work equally on all providers.
 
 | ID | Prompt | claude | openai | gemini |
 |---|---|---|---|---|
-| g1 | Silicone kitchenware contract manufacturer | not yet run | — | — |
-| g2 | Boutique design agency for SaaS brand redesign | not yet run | — | — |
-| g3 | Wholesale roasted coffee for office subscription | not yet run | — | — |
+| g1 | Silicone kitchenware contract manufacturer | ✅ verified | — | — |
+| g2 | Boutique design agency for SaaS brand redesign | ✅ verified | — | — |
+| g3 | Wholesale roasted coffee for office subscription | ✅ verified | — | — |
+
+Claude baseline at `tests/baselines/claude-2026-05-12.md` (~348KB; 3 cases × 4 stages, WebSearch enabled). Re-run with `python scripts/parity_run.py advanced_business_agents.multi_agent_apps.supplier_sourcing_team`.
 
 ## 3. UX parity
 
@@ -46,7 +48,7 @@ suppliers. Other stages work equally on all providers.
 
 | Provider | Verdict |
 |---|---|
-| claude (with WebSearch) | **verified by build smoke test** |
+| claude (with WebSearch) | **verified** — full 3-prompt × 4-stage golden run captured |
 | claude (no WebSearch) | working — degraded sourcing stage |
 | openai | working (degraded sourcing) |
 | gemini | working (degraded sourcing) |

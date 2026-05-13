@@ -21,9 +21,11 @@ for availability sniff checks, but isn't required.
 
 | ID | Prompt | claude | openai | gemini |
 |---|---|---|---|---|
-| g1 | AI hiring screener for SaaS recruiting | not yet run | — | — |
-| g2 | Local coffee subscription box for offices | not yet run | — | — |
-| g3 | B2B service for employer immigration paperwork | not yet run | — | — |
+| g1 | AI hiring screener for SaaS recruiting | ✅ verified | — | — |
+| g2 | Local coffee subscription box for offices | ✅ verified | — | — |
+| g3 | B2B service for employer immigration paperwork | ✅ verified | — | — |
+
+Claude baseline at `tests/baselines/claude-2026-05-12.md` (~46KB; 3 cases × 4 stages). Re-run with `python scripts/parity_run.py advanced_business_agents.multi_agent_apps.website_launch_team`.
 
 ## 3. UX parity
 
@@ -45,7 +47,7 @@ for availability sniff checks, but isn't required.
 
 | Provider | Verdict |
 |---|---|
-| claude | **verified by build smoke test** |
+| claude | **verified** — full 3-prompt × 4-stage golden run captured |
 | openai | working (untested) |
 | gemini | working (untested) |
 | xai | community-supported |

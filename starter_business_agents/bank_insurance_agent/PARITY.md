@@ -18,11 +18,13 @@ No tools used. All providers can produce the structured markdown.
 
 | ID | Prompt | claude | openai | gemini |
 |---|---|---|---|---|
-| g1 | 2-person SaaS for clinics, CA, no PHI | not yet run | — | — |
-| g2 | Solo food truck operator in FL | not yet run | — | — |
-| g3 | E-commerce skincare LLC, $400k rev | not yet run | — | — |
-| g4 | Construction subcontractor in TX with 3 employees | not yet run | — | — |
-| g5 | Pre-revenue solo consultant in NY | not yet run | — | — |
+| g1 | 2-person SaaS for clinics, CA, no PHI | ✅ verified | — | — |
+| g2 | Solo food truck operator in FL | ✅ verified | — | — |
+| g3 | E-commerce skincare LLC, $400k rev | ✅ verified | — | — |
+| g4 | Construction subcontractor in TX with 3 employees | ✅ verified | — | — |
+| g5 | Pre-revenue solo consultant in NY | ✅ verified | — | — |
+
+Claude baseline at `tests/baselines/claude-2026-05-12.md` (~60KB; 5 cases). Re-run with `python scripts/parity_run.py starter_business_agents.bank_insurance_agent`.
 
 ## 3. UX parity
 
@@ -43,7 +45,7 @@ No tools used. All providers can produce the structured markdown.
 
 | Provider | Verdict |
 |---|---|
-| claude | **verified by build smoke test** |
+| claude | **verified** — full 5-prompt golden run captured |
 | openai | working (untested) |
 | gemini | working (untested) |
 | xai | community-supported |
