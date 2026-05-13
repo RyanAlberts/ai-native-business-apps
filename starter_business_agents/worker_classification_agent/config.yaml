@@ -1,0 +1,12 @@
+# Worker Classification Agent — provider config
+provider: claude
+model: claude-sonnet-4-6
+auth_mode: subscription
+temperature: 0.2   # Some judgment + reasoning, but no creative leaps.
+max_tokens: 5120
+
+mcp_servers: {}
+allowed_tools: []
+
+extra:
+  max_turns: 4
