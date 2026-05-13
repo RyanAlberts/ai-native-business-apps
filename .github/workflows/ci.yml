@@ -54,3 +54,24 @@ jobs:
       - name: Verify shared state_portals is importable
         run: |
           python -c "from core.state_portals import STATE_PORTALS, FEDERAL_PORTALS, get_state; assert get_state('CA')['name'] == 'California'"
+
+  test:
+    name: pytest (py${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install dev dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: Run core tests
+        run: pytest core/tests/ -v
