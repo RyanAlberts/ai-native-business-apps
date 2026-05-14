@@ -33,7 +33,10 @@ python -m advanced_business_agents.multi_agent_apps.business_plan_implementation
   "A vertical CRM for independent insurance brokers (2-10 employees)."
 ```
 
-Pipeline takes ~90–180 seconds end-to-end on Sonnet 4.6 with web search.
+Pipeline takes ~8–10 minutes end-to-end on `claude-sonnet-4-6` with web
+search (per-stage ~120–140s × 4 stages observed in 2026-05-14 verification
+runs). Without web search, closer to ~5–6 minutes. Set client timeouts
+≥ 600s if you're scripting against this agent.
 
 ## How it's built
 

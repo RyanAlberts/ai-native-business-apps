@@ -131,6 +131,7 @@ or copy the folder to extend — each is self-contained.
 | 📬 | [83(b) Election Agent](starter_business_agents/election_83b_agent/) | 30-day IRS §83(b) election letter + postmark deadline + service-center routing + calendar reminder. | `election-83b` |
 | 🏛️ | [Delaware Franchise Tax Calculator](starter_business_agents/delaware_franchise_tax_agent/) | Recompute that $85K DE C-Corp bill under both methods — APVC typically lands at $400. | `delaware-franchise-tax` |
 | 👥 | [Worker Classification Agent](starter_business_agents/worker_classification_agent/) | 1099 contractor or W-2 employee? IRS + DOL 2024 + state ABC tests with risk score. | `worker-classification` |
+| 📋 | [Business License + DBA Agent](starter_business_agents/business_license_agent/) | Every license/permit/DBA you need at federal/state/county/city for your industry + city + state. | `business-license` |
 | 💰 | [Loan & Funding Application Agent](starter_business_agents/loan_application_agent/) | Match SBA / microloan / grant / CDFI programs, prep package. | `loan` |
 | 📜 | [Legal Document Generator](starter_business_agents/legal_doc_agent/) | Operating agreement, NDA, IP assignment, ToS, contractor agreement. | `legal-doc` |
 | 🏦 | [Bank & Insurance Setup Agent](starter_business_agents/bank_insurance_agent/) | Business banking comparison + insurance policies you actually need. | `bank-insurance` |
@@ -176,6 +177,7 @@ arrives in v1.1.
 - [Delaware Franchise Tax walkthrough](starter_business_agents/delaware_franchise_tax_agent/WALKTHROUGH.md)
 - [Worker Classification walkthrough](starter_business_agents/worker_classification_agent/WALKTHROUGH.md)
 - [Trademark Search Team walkthrough](advanced_business_agents/multi_agent_apps/trademark_search_team/WALKTHROUGH.md)
+- [Business License + DBA walkthrough](starter_business_agents/business_license_agent/WALKTHROUGH.md)
 - [Loan & Funding walkthrough](starter_business_agents/loan_application_agent/WALKTHROUGH.md)
 - [Legal Document Generator walkthrough](starter_business_agents/legal_doc_agent/WALKTHROUGH.md)
 - [Bank & Insurance Setup walkthrough](starter_business_agents/bank_insurance_agent/WALKTHROUGH.md)

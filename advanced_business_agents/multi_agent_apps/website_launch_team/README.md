@@ -24,7 +24,10 @@ agent website-launch
 agent website-launch --cli "AI hiring screener for SaaS recruiting teams. Bootstrapped, $30k budget, ship in 14 days."
 ```
 
-Pipeline runtime: ~90–180 seconds on Sonnet 4.6.
+Pipeline runtime: ~8–10 minutes end-to-end on `claude-sonnet-4-6`
+(per-stage ~120–140s × 4 stages, verified 2026-05-14). Set client
+timeouts ≥ 600s when scripting against this agent. Pass an
+`on_stage_complete` callback to stream per-stage progress to your UI.
 
 ## Customize
 
