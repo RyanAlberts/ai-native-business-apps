@@ -139,8 +139,11 @@ if __name__ == "__main__":
     user_input = " ".join(sys.argv[1:]) or default
 
     def progress(name, output):
-        print(f"\n{'='*70}\n  Stage complete: {name}\n{'='*70}")
-        print(output[:500] + ("..." if len(output) > 500 else ""))
+        # flush=True so partial progress is visible if the run is killed
+        # mid-pipeline. Branches run in parallel so these arrive in
+        # whatever order the LLM finishes them.
+        print(f"\n{'='*70}\n  Stage complete: {name}\n{'='*70}", flush=True)
+        print(output[:500] + ("..." if len(output) > 500 else ""), flush=True)
 
     result = asyncio.run(run(user_input, on_stage_complete=progress))
     print("\n\n" + "=" * 70)

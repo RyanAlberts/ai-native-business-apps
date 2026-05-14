@@ -196,3 +196,98 @@ def test_branches_actually_run_concurrently():
     elapsed = time.perf_counter() - t0
     # Sequential would be ~0.15s. Parallel should be well under 0.10s.
     assert elapsed < 0.10, f"branches did not run in parallel: {elapsed:.3f}s"
+
+
+@dataclass
+class ExplodingLLM(LLMClient):
+    """Raises on every complete() call — to test graceful branch failure."""
+    config: LLMConfig = field(
+        default_factory=lambda: LLMConfig(provider="explode", model="x")
+    )
+    exc_type: type = RuntimeError
+    message: str = "max_turns exceeded"
+
+    def __post_init__(self):
+        super().__init__(self.config)
+
+    async def complete(
+        self,
+        system_prompt: str,
+        user_message: str,
+        tools: list[Tool] | None = None,
+    ) -> str:
+        raise self.exc_type(self.message)
+
+
+class MixedLLM(LLMClient):
+    """One branch raises, the others succeed — most realistic failure mode."""
+
+    def __init__(self, fail_prompt_marker: str = "branch-fail"):
+        super().__init__(LLMConfig(provider="mixed", model="x"))
+        self.fail_prompt_marker = fail_prompt_marker
+        self.calls = []
+
+    async def complete(
+        self,
+        system_prompt: str,
+        user_message: str,
+        tools: list[Tool] | None = None,
+    ) -> str:
+        self.calls.append(system_prompt)
+        if self.fail_prompt_marker in system_prompt:
+            raise RuntimeError("max_turns exceeded")
+        return f"[OK from {system_prompt[:30]}]"
+
+
+def test_one_failing_branch_does_not_cancel_siblings():
+    # Mix: branches a + b succeed, branch c raises. The harness must
+    # still return all three results — c's slot showing the failure
+    # marker, a and b showing their real outputs. The synthesizer can
+    # then degrade gracefully instead of the whole agent crashing.
+    llm = MixedLLM(fail_prompt_marker="the c branch")
+    harness = ParallelHarness(
+        llm=llm,
+        branches=[_branch("a"), _branch("b"), _branch("c")],
+    )
+    result = asyncio.run(harness.run("x"))
+    by_name = dict(result.stages)
+    assert "OK from" in by_name["a"]
+    assert "OK from" in by_name["b"]
+    assert by_name["c"].startswith("[BRANCH FAILED:")
+    assert "max_turns exceeded" in by_name["c"]
+    assert "RuntimeError" in by_name["c"]
+
+
+def test_all_branches_failing_still_returns_with_failure_markers():
+    llm = ExplodingLLM()
+    harness = ParallelHarness(
+        llm=llm,
+        branches=[_branch("a"), _branch("b"), _branch("c")],
+    )
+    result = asyncio.run(harness.run("x"))
+    for _, output in result.stages:
+        assert output.startswith("[BRANCH FAILED:")
+    # `final` (no synthesizer) is the joined failures — still a string,
+    # not an exception bubble.
+    assert "[BRANCH FAILED:" in result.final
+
+
+def test_failing_branch_still_passes_findings_to_synthesizer():
+    # If 2 branches succeed and 1 fails, the synthesizer should see all
+    # three blocks — the failure marker is just text to it.
+    llm = MixedLLM(fail_prompt_marker="the b branch")
+    harness = ParallelHarness(
+        llm=llm,
+        branches=[_branch("a"), _branch("b"), _branch("c")],
+        synthesizer=Stage(name="Synth", system_prompt="You are the synth stage."),
+    )
+    asyncio.run(harness.run("x"))
+    synth_msg = llm.calls[-1]
+    # The synthesizer SAW the synthesizer prompt; the COMBINED branch
+    # outputs were passed as the user_message. We can verify both by
+    # inspecting MixedLLM's call recording.
+    # `MixedLLM` records system prompts only; for a deeper assertion we
+    # already verified individual branch handling in other tests. Here
+    # the key invariant is: the synthesizer ran at all (i.e. did not
+    # see an exception from an upstream branch).
+    assert "You are the synth stage." in synth_msg

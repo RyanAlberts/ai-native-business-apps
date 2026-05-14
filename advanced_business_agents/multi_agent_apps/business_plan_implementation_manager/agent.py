@@ -92,8 +92,9 @@ if __name__ == "__main__":
     idea = " ".join(sys.argv[1:]) or default
 
     def progress(name, output):
-        print(f"\n{'='*70}\n  Stage complete: {name}\n{'='*70}")
-        print(output[:500] + ("..." if len(output) > 500 else ""))
+        # flush=True so partial progress is visible if the run is killed.
+        print(f"\n{'='*70}\n  Stage complete: {name}\n{'='*70}", flush=True)
+        print(output[:500] + ("..." if len(output) > 500 else ""), flush=True)
 
     result = asyncio.run(run(idea, on_stage_complete=progress))
     print("\n\n" + "=" * 70)
