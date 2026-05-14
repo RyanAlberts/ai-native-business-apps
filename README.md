@@ -25,8 +25,7 @@ LangChain snippets.
 
 This repo is different:
 
-- **Hand-built, not curated.** Every agent is original work, end-to-end
-  tested, no scrapes from elsewhere.
+- ** Agents that run with your existing subscription.** No need to spend extra on API token consumption.
 - **3-command setup.** `git clone`, `pip install -e .`, `streamlit run …`.
   No accounts, no signups, no telemetry.
 - **Provider-agnostic.** Edit one line in `config.yaml` to swap between
