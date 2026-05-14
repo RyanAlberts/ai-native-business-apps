@@ -45,11 +45,20 @@ For verified runs, see baseline files in `tests/baselines/`.
 
 ## 4. Cost / latency (informational only)
 
-| Provider | Median latency | Notes |
+Per-stage latency on `claude-sonnet-4-6` is ~120–140s in the
+Claude-Code-on-the-web sandbox (verified 2026-05-14). The 4-stage
+sequential pipeline therefore takes ~8–10 minutes end-to-end. Earlier
+docs underestimated this — they were measured on faster hardware /
+shorter prompts.
+
+| Provider | End-to-end latency | Notes |
 |---|---|---|
-| claude (subscription + WebSearch) | ~120s | Free under Max; web search adds 10–30s |
-| claude (subscription, no WebSearch) | ~80s | Same quality on stage 1 if model has good training data |
-| openai gpt-4o | ~60s (est.) | ~$0.20–0.40/run, no web search in stage 1 |
+| claude (subscription + WebSearch) | ~8–10 min | Free under Max; web search adds 10–30s/stage |
+| claude (subscription, no WebSearch) | ~5–6 min | Skip web research stage |
+| openai gpt-4o | ~3–5 min (est.) | ~$0.20–0.40/run; faster per-call but quality varies |
+
+If you script against this agent, set timeouts ≥ 600 seconds and stream
+per-stage progress (the harness supports `on_stage_complete` callbacks).
 
 ## 5. Known gaps
 

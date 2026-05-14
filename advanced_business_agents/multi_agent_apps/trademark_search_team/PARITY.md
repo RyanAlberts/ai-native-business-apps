@@ -48,11 +48,19 @@ See `tests/golden.jsonl`.
 
 Five LLM calls per run (4 branches + 1 synthesizer). Branches run in
 parallel — expected wall-clock latency dominated by `max(branch_durations)`
-not the sum. Each branch typically does 3-8 WebSearch calls. Synthesizer
-makes one `uspto_fee_estimate` tool call (microseconds) + the LLM
-completion.
+not the sum. Each branch typically does 5–8 WebSearch calls (config has
+`max_turns: 20` to cover this). Synthesizer makes one `uspto_fee_estimate`
+tool call (microseconds) + the LLM completion.
 
-Rough estimate at Claude (subscription): 30-90 seconds total.
+Estimated wall time on `claude-sonnet-4-6` with WebSearch: 2–5 minutes
+(branch latency ~120–180s + synthesizer ~120s). The first end-to-end
+run on 2026-05-14 crashed at 115s due to a config bug (max_turns=8 too
+low) — fixed; expect a 2–5 min successful run on retry. Set client
+timeouts ≥ 360s.
+
+Compare to a hypothetical 4-branch SEQUENTIAL trademark agent at the
+same per-call rate: ~8–12 minutes. ParallelHarness saves ~60% of
+wall time on this workload.
 
 ## 5. Known gaps
 
