@@ -33,7 +33,7 @@ This repo is different:
   Ollama. Codex (ChatGPT subscription) is on the roadmap.
 - **Apache-2.0.** Fork it. Sell it. No paywall.
 
-The audience: solo founders and 2-person teams bootstrapping a business
+The audience: solo founders and small teams bootstrapping a business
 who want AI baked in from day 0.
 
 ## 🚀 Quick Start
