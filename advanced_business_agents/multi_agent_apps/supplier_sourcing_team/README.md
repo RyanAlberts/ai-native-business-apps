@@ -24,7 +24,11 @@ agent supplier-sourcing
 agent supplier-sourcing --cli "Contract-manufactured silicone kitchenware, 5k units initial, $4/unit, FDA food-safe, open to US/MX/Asia."
 ```
 
-Pipeline runtime: ~90–180s on Sonnet 4.6 with `WebSearch`.
+Pipeline runtime: ~8–10 minutes end-to-end on `claude-sonnet-4-6`
+with `WebSearch` (per-stage ~120–140s × 4 stages, verified
+2026-05-14 — Comparison stage in particular is heavy on synthesis and
+runs longer than the earlier stages). Set client timeouts ≥ 600s when
+scripting against this agent.
 
 ## Use cases
 

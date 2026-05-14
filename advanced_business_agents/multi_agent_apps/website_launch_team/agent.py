@@ -72,8 +72,9 @@ if __name__ == "__main__":
     desc = " ".join(sys.argv[1:]) or default
 
     def progress(name: str, output: str) -> None:
-        print(f"\n{'='*70}\n  Stage complete: {name}\n{'='*70}")
-        print(output[:400] + ("..." if len(output) > 400 else ""))
+        # flush=True so partial progress is visible if the run is killed.
+        print(f"\n{'='*70}\n  Stage complete: {name}\n{'='*70}", flush=True)
+        print(output[:400] + ("..." if len(output) > 400 else ""), flush=True)
 
     result = asyncio.run(run(desc, on_stage_complete=progress))
     print(f"\n{'='*70}\n  FINAL LAUNCH CHECKLIST\n{'='*70}")

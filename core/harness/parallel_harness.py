@@ -68,11 +68,23 @@ class ParallelHarness:
                 if stage.input_template
                 else initial_input
             )
-            output = await self.llm.complete(
-                system_prompt=stage.system_prompt,
-                user_message=user_msg,
-                tools=stage.tools or None,
-            )
+            try:
+                output = await self.llm.complete(
+                    system_prompt=stage.system_prompt,
+                    user_message=user_msg,
+                    tools=stage.tools or None,
+                )
+            except Exception as e:
+                # One branch failing must NOT cancel the others or crash
+                # the whole agent. Surface the failure as the branch's
+                # output so the synthesizer can downgrade its verdict
+                # (e.g. "search coverage was incomplete") rather than
+                # propagating the exception through asyncio.gather.
+                output = (
+                    f"[BRANCH FAILED: {type(e).__name__}: {e}. "
+                    f"The synthesizer should treat this branch's findings "
+                    f"as unavailable and downgrade its verdict accordingly.]"
+                )
             if on_stage_complete is not None:
                 ret = on_stage_complete(stage.name, output)
                 if inspect.isawaitable(ret):

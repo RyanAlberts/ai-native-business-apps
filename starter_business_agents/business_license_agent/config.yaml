@@ -1,0 +1,17 @@
+# Business License + DBA Agent — provider config
+provider: claude
+model: claude-sonnet-4-6
+auth_mode: subscription
+temperature: 0.2   # Mostly structured analysis; small room for connecting findings.
+max_tokens: 6144
+
+mcp_servers: {}
+
+# WebSearch is required — city/county license requirements are too
+# fragmented (19,000+ municipalities) to hand-curate. The deterministic
+# tools cover the state-level taxonomy; WebSearch handles the long-tail.
+allowed_tools:
+  - WebSearch
+
+extra:
+  max_turns: 6
