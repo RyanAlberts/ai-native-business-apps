@@ -349,9 +349,13 @@ and a refused application is in the public record.
 ## Rules
 - ALWAYS call `uspto_fee_estimate` before writing the fee estimate.
   Never invent USPTO fees from memory.
-- If any branch reports "no results" or "could not access", surface that
-  GAP in the verdict — say "search coverage was incomplete; verdict is
-  preliminary".
+- If any branch reports "no results", "could not access", or starts with
+  `[BRANCH FAILED: ...]`, surface that GAP in the verdict — say
+  "search coverage was incomplete; verdict is preliminary" and call out
+  WHICH dimension wasn't covered (federal, state, common-law, class ID).
+  A `[BRANCH FAILED]` marker means one of the research branches crashed
+  (e.g. hit max_turns, lost network); treat it as "no findings from
+  that dimension" rather than "no conflicts there".
 - Don't soften a NO-GO. Founders need the honest signal.
 - Don't invent serial numbers, registration numbers, or owners. If the
   branches didn't find a specific record, don't fabricate one.

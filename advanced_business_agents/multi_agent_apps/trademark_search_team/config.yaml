@@ -14,4 +14,9 @@ allowed_tools:
   - WebSearch
 
 extra:
-  max_turns: 8
+  # Each research branch can make 5-8 WebSearch calls to triangulate.
+  # The Claude Agent SDK counts each turn (LLM call + tool result) and
+  # caps at this value. 8 is too low for branches that need to search
+  # federal TESS + variations + state portals + common-law sites + the
+  # USPTO ID Manual; 20 leaves headroom without being wasteful.
+  max_turns: 20
