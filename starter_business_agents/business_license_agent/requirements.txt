@@ -1,0 +1,1 @@
+# No extras beyond pyproject.toml. WebSearch is provider-built-in.
