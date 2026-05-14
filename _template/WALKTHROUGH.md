@@ -1,15 +1,56 @@
 # Walkthrough — Building Your First AI-Native Business Agent
 
 You just cloned an open-source repo of business agents and you want to ship
-your own version. This walkthrough takes you from `git clone` to a customized,
-running agent in about 15 minutes.
+your own version. This walkthrough takes you from `git clone` to a
+customized, running agent in about 15 minutes — and teaches you the
+**Claude Agent SDK pattern** that every agent in this repo follows.
 
 ## What you'll build
 
-A single-agent Streamlit app that validates startup ideas. By the end, you'll
-have an agent that takes any business idea as input and returns a structured
-analysis — problem, target customer, MVP scope, top risks, and a first
-experiment to run this week.
+A single-agent Streamlit app that validates startup ideas. By the end,
+you'll have an agent that takes any business idea as input and returns a
+structured analysis — problem, target customer, MVP scope, top risks, and
+a first experiment to run this week.
+
+You'll also leave with the canonical agent-building shape that works for
+any domain — incorporation, recruiting, fundraising, customer research,
+whatever.
+
+## The Claude Agent SDK pattern
+
+Every agent in this repo is a thin domain layer on top of
+[`claude-agent-sdk`](https://docs.claude.com/en/api/agent-sdk). That's
+the platform; we just bring the prompts, tools, and config.
+
+The whole pattern in 4 lines:
+
+```python
+config = load_config(__file__)        # reads config.yaml
+llm    = get_llm(config)              # ClaudeClient by default
+result = await llm.complete(          # one SDK round-trip
+    system_prompt=SYSTEM_PROMPT,
+    user_message=user_input,
+    tools=all_tools(),                # list[core.Tool]
+)
+```
+
+Behind `llm.complete()`, our `core/llm/claude.py` constructs
+`ClaudeAgentOptions(model, system_prompt, mcp_servers, allowed_tools,
+setting_sources=[])` and iterates the SDK's `query()` generator until the
+final `ResultMessage` arrives. The SDK handles the tool loop, MCP tool
+routing, and clean session isolation. **You never touch the SDK
+directly** — the abstraction in `core/llm/claude.py` is the single place
+that knows about it.
+
+### Why this pattern, not raw `claude -p` or LangChain?
+
+1. **Max 20x billing (June 15, 2026+).** Every Agent SDK call (including
+   from third-party apps like this one) draws on a separate $200/mo
+   credit. Interactive Claude Code / chat limits stay reserved.
+2. **MCP tool routing.** Tools become first-class structured tool-use
+   messages. No stdout parsing.
+3. **Session isolation.** `setting_sources=[]` keeps each agent run
+   reproducible regardless of the host's installed plugins/hooks.
 
 ## How it works (90 seconds)
 

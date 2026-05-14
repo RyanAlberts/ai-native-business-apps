@@ -14,6 +14,13 @@ hand-built, provider-agnostic, Apache-2.0.**
 
 ---
 
+> **💎 Built on the [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk).** Every agent
+> in this repo is built on `claude-agent-sdk`. Starting **June 15, 2026**, Claude **Max 20x**
+> subscribers get a **$200/month credit** for Claude Agent SDK usage — *including third-party
+> apps built on the SDK*. Agent SDK calls draw from this separate budget; your interactive
+> Claude Code / Cowork / chat limits stay untouched. Translation: every Max 20x user can run
+> every agent in this repo for $0 marginal cost, up to $200/mo. ([details](https://www.claude.com/legal/commercial-terms))
+
 ## 💡 Why this exists
 
 Most founders' first 30 days are a slog of boring-but-unavoidable tasks:
@@ -25,12 +32,19 @@ LangChain snippets.
 
 This repo is different:
 
-- **Agents that run with your existing subscription.** No need to spend extra on API token consumption.
+- **Built on Claude Agent SDK — runs on your existing subscription.**
+  No extra API spend, no LangChain, no bespoke LLM wrapper. The SDK is
+  the platform; we just curate the agents on top. From **June 15, 2026**,
+  Max 20x SDK calls (including from third-party apps like this one) draw
+  on a separate **$200/mo credit** — interactive Claude Code / Cowork /
+  chat limits stay reserved.
+- **Hand-built, not curated.** Every agent is original work, end-to-end
+  tested, no scrapes from elsewhere.
 - **3-command setup.** `git clone`, `pip install -e .`, `streamlit run …`.
   No accounts, no signups, no telemetry.
 - **Provider-agnostic.** Edit one line in `config.yaml` to swap between
-  Claude (subscription via Claude Max), OpenAI, Gemini, xAI, or local
-  Ollama. Codex (ChatGPT subscription) is on the roadmap.
+  Claude (default, via Agent SDK), OpenAI, Gemini, xAI, or local Ollama.
+  Codex (ChatGPT subscription) is on the roadmap.
 - **Apache-2.0.** Fork it. Sell it. No paywall.
 
 The audience: solo founders and small teams bootstrapping a business
@@ -115,6 +129,7 @@ which tool a contributor is in, they get a consistent picture of the conventions
 - [🧰 Skills](#-skills)
 - [📱 LLM Apps](#-llm-apps)
 - [📚 Walkthroughs](#-walkthroughs)
+- [💎 Built on Claude Agent SDK](#-built-on-claude-agent-sdk)
 - [✅ Prerequisites](#-prerequisites)
 - [🔌 Providers](#-providers)
 - [🤝 Contributing](#-contributing)
@@ -184,6 +199,68 @@ arrives in v1.1.
 - [Business Plan Implementation Manager walkthrough](advanced_business_agents/multi_agent_apps/business_plan_implementation_manager/WALKTHROUGH.md)
 - [Website Launch Team walkthrough](advanced_business_agents/multi_agent_apps/website_launch_team/WALKTHROUGH.md)
 - [Supplier Sourcing Team walkthrough](advanced_business_agents/multi_agent_apps/supplier_sourcing_team/WALKTHROUGH.md)
+
+## 💎 Built on Claude Agent SDK
+
+Every agent in this repo is a thin domain layer on top of
+[`claude-agent-sdk`](https://docs.claude.com/en/api/agent-sdk). That's a
+deliberate architectural choice — not LangChain, not LangGraph, not a
+bespoke `claude -p` subprocess wrapper. Three reasons:
+
+1. **Predictable billing for Max 20x users.** From June 15, 2026, every
+   Agent SDK call (including from third-party tools like this repo) draws
+   on the user's separate **$200/mo SDK credit**, not their interactive
+   subscription cap. That makes "fork this repo + ship to your own
+   audience" a viable distribution model with predictable economics.
+2. **First-class tool routing via MCP.** The SDK speaks MCP natively, so
+   our `core.Tool` abstraction wraps tools as `create_sdk_mcp_server`
+   instances and the model gets clean structured tool-use messages back.
+   No JSON-parsing of CLI stdout, no fragile prompt-engineering to coax
+   tool calls.
+3. **Session isolation.** `ClaudeAgentOptions(setting_sources=[])` lets
+   each agent run in a clean Claude session, even when invoked from
+   inside Claude Code or Cursor where the host has user-installed
+   skills/plugins/hooks. No leakage, reproducible output.
+
+### The canonical agent pattern (12 lines)
+
+Every agent in this repo follows the same shape. Here it is from
+[`_template/agent.py`](_template/agent.py), stripped to essentials:
+
+```python
+from claude_agent_sdk import query, ClaudeAgentOptions
+from core import get_llm, load_config        # our thin abstraction
+from .prompts import SYSTEM_PROMPT
+from .tools import all_tools                  # list[core.Tool]
+
+async def run(user_input: str) -> str:
+    config = load_config(__file__)            # reads config.yaml
+    llm = get_llm(config)                     # ClaudeClient by default
+    return await llm.complete(
+        system_prompt=SYSTEM_PROMPT,
+        user_message=user_input,
+        tools=all_tools(),
+    )
+```
+
+`get_llm(config)` returns a `ClaudeClient` that internally constructs
+`ClaudeAgentOptions(model=..., system_prompt=..., mcp_servers=...,
+allowed_tools=..., setting_sources=[])` and iterates `query(prompt=...,
+options=...)`. The SDK handles the tool loop; we just consume the final
+`ResultMessage.result`. Multi-stage agents (business plan, website
+launch, supplier sourcing) compose this primitive via
+`SequentialHarness`.
+
+### Why not `claude -p`?
+
+Subprocess + stdout parsing works, but you lose: structured message
+types, MCP tool routing, OAuth env detection for Claude Code / Cursor
+contexts, and `setting_sources=[]` isolation. The SDK gives all four for
+free. We keep a stub `core/llm/codex.py` adapter as the model for what a
+subprocess-based provider would look like.
+
+→ Start a new agent: copy [`_template/`](_template/), edit `prompts.py`,
+`tools.py`, `config.yaml`. The SDK call shape never changes.
 
 ## ✅ Prerequisites
 
