@@ -11,10 +11,20 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 import streamlit as st
 
+from core.ui import (
+    REQ,
+    UNSET,
+    inject_styles,
+    result_actions,
+    sticky_header,
+    validate_required,
+)
+
 from starter_business_agents.legal_doc_agent.agent import run  # noqa
 
 
 DOC_TYPES = [
+    UNSET,
     "Operating Agreement (single-member LLC)",
     "Operating Agreement (multi-member LLC)",
     "Mutual NDA",
@@ -28,54 +38,74 @@ DOC_TYPES = [
 ]
 
 
-st.set_page_config(page_title="Legal Document Generator", page_icon="📜")
-st.title("📜 Legal Document Generator")
-st.caption(
-    "Draft operating agreements, NDAs, IP assignments, ToS, and more. "
-    "Templates only — get attorney review before signing."
+st.set_page_config(page_title="Legal Document Generator", page_icon="📜", layout="centered")
+
+inject_styles()
+sticky_header(
+    emoji="📜",
+    title="Legal Document Generator",
+    caption="Operating agreements, NDAs, IP assignments, ToS — templates for attorney review.",
 )
 
-doc_type = st.selectbox("Document type", DOC_TYPES, index=2)
-business = st.text_input(
-    "Your business (name + what it does)",
-    placeholder="Acme Labs LLC — software consultancy",
-)
-state = st.text_input("State of formation", placeholder="Delaware")
-operating_state = st.text_input("State(s) of operation", placeholder="California")
-
-col1, col2 = st.columns(2)
-with col1:
-    party_a = st.text_input("Party A (your side)", placeholder="Acme Labs LLC")
-with col2:
-    party_b = st.text_input(
-        "Party B (other side, if applicable)",
-        placeholder="AcmeCorp Inc.",
+with st.form("legal_doc_form"):
+    doc_type = st.selectbox("Document type" + REQ, DOC_TYPES)
+    business = st.text_input(
+        "Your business (name + what it does)" + REQ,
+        placeholder="Acme Labs LLC — software consultancy",
+    )
+    state = st.text_input("State of formation" + REQ, placeholder="Delaware")
+    operating_state = st.text_input(
+        "State(s) of operation" + REQ, placeholder="California"
     )
 
-specifics = st.text_area(
-    "Special terms or context",
-    placeholder=(
-        "e.g. 2-year NDA term, governing law Delaware, no industry-specific "
-        "triggers, this is for a sales conversation."
-    ),
-    height=120,
-)
+    col1, col2 = st.columns(2)
+    with col1:
+        party_a = st.text_input("Party A (your side)" + REQ, placeholder="Acme Labs LLC")
+    with col2:
+        party_b = st.text_input(
+            "Party B (other side — leave blank for single-party docs)",
+            placeholder="AcmeCorp Inc.",
+            help="Optional. Many docs (Operating Agreement, ToS, Privacy Policy) have only one party.",
+        )
 
-if st.button("Draft document", type="primary") and business.strip():
+    specifics = st.text_area(
+        "Special terms or context" + REQ,
+        placeholder=(
+            "e.g. 2-year NDA term, governing law Delaware, no industry-specific "
+            "triggers, this is for a sales conversation."
+        ),
+        height=120,
+    )
+
+    submitted = st.form_submit_button("Create document draft", type="primary")
+
+if submitted:
+    validate_required(
+        {
+            "Document type": doc_type,
+            "Your business (name + what it does)": business,
+            "State of formation": state,
+            "State(s) of operation": operating_state,
+            "Party A (your side)": party_a,
+            "Special terms or context": specifics,
+        }
+    )
+
     full_input = (
         f"Document type: {doc_type}\n"
-        f"Business: {business}\n"
-        f"State of formation: {state or '(not specified)'}\n"
-        f"State(s) of operation: {operating_state or '(not specified)'}\n"
-        f"Party A: {party_a or '(not specified)'}\n"
-        f"Party B: {party_b or '(not applicable)'}\n\n"
-        f"Special terms / context: {specifics.strip() or '(none provided)'}"
+        f"Business: {business.strip()}\n"
+        f"State of formation: {state.strip()}\n"
+        f"State(s) of operation: {operating_state.strip()}\n"
+        f"Party A: {party_a.strip()}\n"
+        f"Party B: {party_b.strip() or '(not applicable)'}\n\n"
+        f"Special terms / context: {specifics.strip()}"
     )
+    safe_doc = doc_type.lower().replace(" ", "_").replace("/", "_")
+    filename = f"{safe_doc}_draft.md"
     with st.spinner("Drafting..."):
         result = asyncio.run(run(full_input))
+
+    result_actions(markdown=result, filename=filename, position="top")
     st.markdown(result)
-    st.download_button(
-        "Download as markdown",
-        result,
-        file_name=f"{doc_type.lower().replace(' ', '_').replace('/', '_')}_draft.md",
-    )
+    st.divider()
+    result_actions(markdown=result, filename=filename, position="bottom")
