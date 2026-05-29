@@ -66,5 +66,8 @@ line-length = 100
 target-version = "py311"
 
 [tool.pytest.ini_options]
-testpaths = ["core/tests"]
+testpaths = [
+    "core/tests",
+    "advanced_business_agents/multi_agent_apps/founding_journey/tests",
+]
 
