@@ -5,7 +5,7 @@
 | Path | `advanced_business_agents/multi_agent_apps/founding_journey/` |
 | Default model | claude-sonnet-4-6 |
 | Pattern | Custom orchestrator over 5 starter agents + synthesis |
-| Last verified | _pending live run — see Known gaps_ |
+| Last verified | 2026-05-29 (live Claude run; baseline captured) |
 
 ## 1. Capability parity
 
@@ -24,12 +24,21 @@ docs, banking, compliance). The synthesis step uses no tools.
 |---|---|---|---|---|
 | g1 | Two-founder DE C-Corp SaaS, TX-based, seed in 9mo | ⏳ pending | — | — |
 | g2 | Solo WY LLC e-commerce, bootstrapped | ⏳ pending | — | — |
-| g3 | Robotics C-Corp, CA home / DE formation, hardware liability | ⏳ pending | — | — |
+| g3 | Robotics C-Corp, CA home / DE formation, hardware liability | ✅ verified (2026-05-29) | — | — |
 
 The full pipeline (ordering, context threading, synthesis, artifact
 generation) is verified **offline** with a fake LLM in
-`tests/test_journey.py` (8 tests). What remains is a live Claude run to
-capture golden baselines.
+`tests/test_journey.py` (8 tests). A **live Claude run** (g3 — Northwind
+Robotics) was captured on 2026-05-29: all 5 steps ran in order, the packet
+contained every required section, and 9 artifacts were generated including a
+correct `compliance-deadlines.ics`. Baseline at
+`tests/baselines/claude-2026-05-29.md`.
+
+> Note: the live capture used the `claude` **CLI transport**, not the SDK
+> streaming path — the SDK passes `--dangerously-skip-permissions`
+> (`permission_mode="bypassPermissions"`), which the CLI refuses under
+> root. `core/llm/claude.py` now accepts a `permission_mode` override in
+> `config.yaml::extra` so the SDK path works in root/CI environments too.
 
 ## 3. UX parity
 
