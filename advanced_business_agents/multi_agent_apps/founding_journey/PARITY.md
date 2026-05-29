@@ -5,7 +5,7 @@
 | Path | `advanced_business_agents/multi_agent_apps/founding_journey/` |
 | Default model | claude-sonnet-4-6 |
 | Pattern | Custom orchestrator over 5 starter agents + synthesis |
-| Last verified | 2026-05-29 (live Claude run; baseline captured) |
+| Last verified | offline (fake-LLM) only — live run pending, see Known gaps |
 
 ## 1. Capability parity
 
@@ -24,21 +24,18 @@ docs, banking, compliance). The synthesis step uses no tools.
 |---|---|---|---|---|
 | g1 | Two-founder DE C-Corp SaaS, TX-based, seed in 9mo | ⏳ pending | — | — |
 | g2 | Solo WY LLC e-commerce, bootstrapped | ⏳ pending | — | — |
-| g3 | Robotics C-Corp, CA home / DE formation, hardware liability | ✅ verified (2026-05-29) | — | — |
+| g3 | Robotics C-Corp, CA home / DE formation, hardware liability | ⏳ pending | — | — |
 
 The full pipeline (ordering, context threading, synthesis, artifact
 generation) is verified **offline** with a fake LLM in
-`tests/test_journey.py` (8 tests). A **live Claude run** (g3 — Northwind
-Robotics) was captured on 2026-05-29: all 5 steps ran in order, the packet
-contained every required section, and 9 artifacts were generated including a
-correct `compliance-deadlines.ics`. Baseline at
-`tests/baselines/claude-2026-05-29.md`.
+`tests/test_journey.py` (8 tests). A live Claude golden run is **still
+pending** and is part of the handoff verification (`docs/HANDOFF_PROMPT.md`).
 
-> Note: the live capture used the `claude` **CLI transport**, not the SDK
-> streaming path — the SDK passes `--dangerously-skip-permissions`
-> (`permission_mode="bypassPermissions"`), which the CLI refuses under
-> root. `core/llm/claude.py` now accepts a `permission_mode` override in
-> `config.yaml::extra` so the SDK path works in root/CI environments too.
+> Environment note: capturing a live baseline from inside a root container
+> requires `permission_mode` to be overridable, because the SDK's default
+> `bypassPermissions` makes the CLI pass `--dangerously-skip-permissions`,
+> which the CLI refuses under root. `core/llm/claude.py` now accepts a
+> `permission_mode` override in `config.yaml::extra` for exactly this.
 
 ## 3. UX parity
 
