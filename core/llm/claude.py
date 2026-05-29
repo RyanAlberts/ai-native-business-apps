@@ -87,7 +87,11 @@ class ClaudeClient(LLMClient):
             system_prompt=system_prompt,
             mcp_servers=mcp_servers,
             allowed_tools=allowed,
-            permission_mode="bypassPermissions",
+            # `bypassPermissions` is right for an unattended agent on a
+            # normal user account, but the underlying CLI refuses it under
+            # root/sudo. Allow an override (e.g. "default") via config so
+            # the agents also run in root containers / CI.
+            permission_mode=self.config.extra.get("permission_mode", "bypassPermissions"),
             max_turns=self.config.extra.get("max_turns", 25),
             # Isolate from host environment: don't auto-load the user's
             # global / project / local Claude settings (skills, plugins,
