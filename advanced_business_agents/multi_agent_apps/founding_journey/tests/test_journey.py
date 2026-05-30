@@ -120,3 +120,65 @@ def test_default_steps_shape():
     steps = default_steps()
     assert len(steps) == 5
     assert all(s.system_prompt and s.instruction for s in steps)
+
+
+# ── resilience ─────────────────────────────────────────────────────────
+
+
+class FailingStepLLM(LLMClient):
+    """Fails on the legal-docs step; succeeds (incl. synthesis) otherwise."""
+
+    def __init__(self):
+        super().__init__(LLMConfig(provider="fake", model="fake"))
+
+    async def complete(self, system_prompt, user_message, tools=None):
+        if "Day-0 Formation Packet" in system_prompt:
+            return "## 🎯 Executive Summary\nSynthesized from what ran."
+        # The legal-doc step's instruction mentions an operating agreement /
+        # founding docs; key off the prompt to fail exactly one specialist.
+        from starter_business_agents.legal_doc_agent import prompts as legal_p
+
+        if system_prompt == legal_p.SYSTEM_PROMPT:
+            raise RuntimeError("simulated specialist timeout")
+        return "ok"
+
+
+class FailingSynthesisLLM(LLMClient):
+    """Every specialist succeeds; only the final synthesis call blows up."""
+
+    def __init__(self):
+        super().__init__(LLMConfig(provider="fake", model="fake"))
+
+    async def complete(self, system_prompt, user_message, tools=None):
+        if "Day-0 Formation Packet" in system_prompt:
+            raise RuntimeError("simulated synthesis failure")
+        return "specialist ok"
+
+
+def test_one_failing_step_does_not_sink_the_run():
+    result = asyncio.run(run_journey(_company(), llm=FailingStepLLM()))
+    # All five steps are still represented; exactly one is flagged failed.
+    assert len(result.steps) == 5
+    failed = result.failed_steps
+    assert [s.key for s in failed] == ["legal_doc"]
+    assert not failed[0].ok
+    assert "simulated specialist timeout" in failed[0].error
+    # Synthesis still ran and produced a packet.
+    assert "Synthesized from what ran" in result.final
+
+
+def test_failed_step_is_still_in_artifacts():
+    result = asyncio.run(run_journey(_company(), llm=FailingStepLLM()))
+    names = {a.filename for a in result.artifacts()}
+    # The failed step still gets a numbered markdown file (with its note).
+    assert "03-legal_doc.md" in names
+
+
+def test_synthesis_failure_falls_back_to_concatenation():
+    result = asyncio.run(run_journey(_company(), llm=FailingSynthesisLLM()))
+    # No exception; the packet is the fallback concatenation of step outputs.
+    assert "Automatic synthesis could not complete" in result.final
+    assert "simulated synthesis failure" in result.final
+    assert "🏛️ Incorporation" in result.final
+    # And all five steps are recorded as successful.
+    assert result.failed_steps == []

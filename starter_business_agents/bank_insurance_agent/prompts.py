@@ -45,7 +45,17 @@ to a digital bank):
 ### Banking pitfalls
 3–4 bullets. Examples: commingling personal and business funds, using
 Zelle for business (often violates ToS), inadequate FDIC coverage at
-small fintechs, missing the "beneficial ownership" disclosure.
+small fintechs, an incomplete beneficial-ownership disclosure to the BANK.
+
+IMPORTANT — do not conflate two different "beneficial ownership" things:
+1. The BANK'S beneficial-ownership form (FinCEN Customer Due Diligence
+   rule) — the bank collects owner info when you open the account. This
+   is the only one relevant to this agent; mention it as a banking step.
+2. The separate FinCEN BOI report under the Corporate Transparency Act —
+   this is NOT a banking task, and under FinCEN's 2025 interim final rule
+   US-formed entities are EXEMPT from it. Do NOT tell the founder they
+   must file a BOI report with FinCEN, quote a filing deadline, or warn of
+   fines for not filing — that guidance is out of date for US companies.
 
 ## Part 2: Insurance
 

@@ -5,19 +5,22 @@ from __future__ import annotations
 
 import asyncio
 
-from core import get_llm, load_config
+from core import build_user_message, get_llm, load_config
 
 from .prompts import SYSTEM_PROMPT
 from .tools import all_tools
 
 
-async def run(request: str) -> str:
+async def run(request) -> str:
     """Draft a legal document for review by counsel.
 
     Args:
         request: Free-text request including document type, business context,
             parties, and any special terms. E.g. "Single-member LLC Operating
             Agreement for a Delaware-formed SaaS consultancy operating in CA."
+            A shared ``Company`` profile (or dict / ``company.json`` path /
+            raw JSON) is also accepted — its facts are threaded in, though you
+            still need to say which document you want in the company notes.
 
     Returns:
         Markdown including the draft document + key-clause explanations.
@@ -26,7 +29,7 @@ async def run(request: str) -> str:
     llm = get_llm(config)
     return await llm.complete(
         system_prompt=SYSTEM_PROMPT,
-        user_message=request,
+        user_message=build_user_message(request),
         tools=all_tools(),
     )
 

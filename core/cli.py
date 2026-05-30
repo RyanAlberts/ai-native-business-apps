@@ -202,11 +202,14 @@ def _run_cli(agent: dict, user_input: str) -> int:
     if not hasattr(mod, "run"):
         print(f"error: {agent['dotted']}.agent has no `run` function")
         return 2
+    from .brand import with_disclaimer
+
     result = asyncio.run(mod.run(user_input))
-    if hasattr(result, "final"):  # HarnessResult
-        print(result.final)
-    else:
-        print(result)
+    # `.final` covers HarnessResult / JourneyResult; otherwise it's the
+    # plain markdown string a starter agent returns. Either way, append the
+    # disclaimer once so the piped/redirected output carries it too.
+    text = result.final if hasattr(result, "final") else result
+    print(with_disclaimer(text))
     return 0
 
 

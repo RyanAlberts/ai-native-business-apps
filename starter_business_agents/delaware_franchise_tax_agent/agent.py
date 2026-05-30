@@ -22,20 +22,25 @@ from __future__ import annotations
 
 import asyncio
 
-from core import get_llm, load_config
+from core import build_user_message, get_llm, load_config
 
 from .prompts import SYSTEM_PROMPT
 from .tools import all_tools
 
 
-async def run(founder_input: str) -> str:
-    """Compute DE franchise tax and explain the recommended method."""
+async def run(founder_input) -> str:
+    """Compute DE franchise tax and explain the recommended method.
+
+    Accepts free text or a shared ``Company`` profile (dict / ``company.json``
+    path / raw JSON also work); known facts are threaded in automatically.
+    """
     config = load_config(__file__)
     llm = get_llm(config)
     return await llm.complete(
         system_prompt=SYSTEM_PROMPT,
-        user_message=(
-            f"Help me with my Delaware franchise tax bill:\n\n{founder_input}"
+        user_message=build_user_message(
+            founder_input,
+            template="Help me with my Delaware franchise tax bill:\n\n{input}",
         ),
         tools=all_tools(),
     )

@@ -11,9 +11,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 import streamlit as st
 
+from core import merge_company
 from core.ui import (
     REQ,
     UNSET,
+    company_loader,
     inject_styles,
     result_actions,
     sticky_header,
@@ -32,23 +34,32 @@ sticky_header(
     caption="Sales-tax nexus, state registrations, annual filings, bookkeeping — pre-CPA.",
 )
 
+profile = company_loader(key="compliance_tax")
+
+# Map a loaded entity_type onto this form's options when it matches.
+_ENTITY_OPTIONS = [
+    UNSET,
+    "Single-member LLC",
+    "Multi-member LLC",
+    "S-Corp",
+    "C-Corp",
+    "Sole Proprietor",
+    "Partnership",
+]
+_entity_default = next(
+    (i for i, o in enumerate(_ENTITY_OPTIONS)
+     if profile and profile.entity_type and profile.entity_type.lower() in o.lower()),
+    0,
+)
+
 with st.form("compliance_form"):
     col1, col2 = st.columns(2)
     with col1:
-        entity = st.selectbox(
-            "Entity type" + REQ,
-            [
-                UNSET,
-                "Single-member LLC",
-                "Multi-member LLC",
-                "S-Corp",
-                "C-Corp",
-                "Sole Proprietor",
-                "Partnership",
-            ],
-        )
+        entity = st.selectbox("Entity type" + REQ, _ENTITY_OPTIONS, index=_entity_default)
         formation_state = st.text_input(
-            "State of formation" + REQ, placeholder="Delaware"
+            "State of formation" + REQ,
+            value=(profile.state_of_formation if profile else ""),
+            placeholder="Delaware",
         )
         revenue = st.selectbox(
             "Year 1 revenue (expected)" + REQ,
@@ -92,17 +103,21 @@ if submitted:
         }
     )
 
-    full_input = (
-        f"Entity type: {entity}\n"
-        f"State of formation: {formation_state.strip()}\n"
-        f"States of operation: {operation_states.strip()}\n"
-        f"Sales channels: {sales_channels.strip()}\n"
-        f"Employees: {employees}\n"
-        f"Expected year 1 revenue: {revenue}\n\n"
-        f"Products / services: {products.strip()}"
+    company = merge_company(
+        profile,
+        entity_type=entity,
+        state_of_formation=formation_state.strip(),
+        employees_plan=employees,
+        notes=(
+            f"Entity type: {entity}. State of formation: {formation_state.strip()}. "
+            f"States of operation: {operation_states.strip()}. "
+            f"Sales channels: {sales_channels.strip()}. Employees: {employees}. "
+            f"Expected year 1 revenue: {revenue}. "
+            f"Products / services: {products.strip()}"
+        ),
     )
     with st.spinner("Mapping compliance..."):
-        result = asyncio.run(run(full_input))
+        result = asyncio.run(run(company))
 
     result_actions(markdown=result, filename="compliance_plan.md", position="top")
     st.markdown(result)
