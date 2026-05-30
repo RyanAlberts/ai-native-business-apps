@@ -599,9 +599,15 @@ STATE_PORTALS: dict[str, dict[str, str | None]] = {
 FEDERAL_PORTALS: dict[str, str] = {
     # Apply for an EIN (Employer Identification Number) from the IRS — free.
     "ein_application": "https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online",
-    # Beneficial Ownership Information report (FinCEN, post-Corporate Transparency Act).
+    # Beneficial Ownership Information report (FinCEN, Corporate Transparency
+    # Act). NOTE: FinCEN's interim final rule (effective 2025-03-26) exempts
+    # entities created in the US ("domestic reporting companies") from the BOI
+    # requirement. Only foreign companies registered to do business in the US
+    # must file. We keep the link for the narrow set of founders it still
+    # applies to and for verification.
     "boi_filing": "https://boiefiling.fincen.gov/",
-    # FinCEN BOI FAQ / explainer for founders.
+    # FinCEN BOI FAQ / explainer — the authoritative source for who must file
+    # after the 2025 interim final rule. Always point founders here.
     "boi_faq": "https://www.fincen.gov/boi-faqs",
     # SBA local assistance — find your nearest SBDC / SCORE / Women's Business Center.
     "sba_local_assistance": "https://www.sba.gov/local-assistance",

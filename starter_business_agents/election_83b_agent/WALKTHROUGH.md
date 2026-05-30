@@ -103,7 +103,9 @@ capital gains later on sale.
 ### Step 7 — post-filing checklist
 
 - Keep the certified-mail receipt forever (it's your audit defense).
-- Attach a copy of the letter to your Form 1040 for the year of transfer.
+- Keep a copy of the letter with your permanent tax records. (You no
+  longer attach it to your Form 1040 — TD 9779 removed that requirement
+  in 2016.)
 - Update your cap-table tool to record that an 83(b) was filed.
 - Tell your CPA.
 

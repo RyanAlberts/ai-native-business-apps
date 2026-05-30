@@ -116,13 +116,26 @@ if submitted:
 
     async def _on_step(step):
         done["n"] += 1
-        progress.progress(done["n"] / total, text=f"Completed {step.emoji} {step.title}")
-        status.write(f"✅ {step.emoji} {step.title}")
+        ok = getattr(step, "ok", True)
+        icon = "✅" if ok else "⚠️"
+        label = f"{step.emoji} {step.title}" + ("" if ok else " — skipped (see packet)")
+        progress.progress(done["n"] / total, text=f"{icon} {step.emoji} {step.title}")
+        status.write(f"{icon} {label}")
 
     with st.spinner("This runs five agents in sequence — give it a minute…"):
         result = asyncio.run(run(company, on_step=_on_step))
     progress.progress(1.0, text="Day-0 Formation Packet ready.")
     status.update(label="Journey complete", state="complete", expanded=False)
+
+    # If any specialist degraded, tell the founder up front rather than
+    # letting them assume the packet is complete.
+    if result.failed_steps:
+        names = ", ".join(f"{s.emoji} {s.title}" for s in result.failed_steps)
+        st.warning(
+            f"{len(result.failed_steps)} step(s) couldn't complete automatically: "
+            f"{names}. The packet below covers everything that did run — "
+            "re-run the journey or run those agents individually to fill the gaps."
+        )
 
     artifacts = result.artifacts()
 
@@ -136,7 +149,8 @@ if submitted:
 
     with st.expander("See each specialist's full output"):
         for step in result.steps:
-            st.markdown(f"### {step.emoji} {step.title}")
+            flag = "" if getattr(step, "ok", True) else " ⚠️ (skipped — failed)"
+            st.markdown(f"### {step.emoji} {step.title}{flag}")
             st.markdown(step.output)
             st.divider()
 

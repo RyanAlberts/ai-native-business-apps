@@ -78,8 +78,12 @@ A short list with deadlines, with LINKS to the federal portals from the
 - Form 1099-NEC for contractors paid $600+ — January 31
 - Form W-2 / W-3 for employees — January 31
 - Form 940 / 941 (employer payroll tax) — quarterly + annual
-- BOI filing with [FinCEN]({{federal.boi_filing}}) — link to the
-  [BOI FAQ]({{federal.boi_faq}}) too, since rules have been in flux
+- BOI filing with FinCEN — ONLY for foreign reporting companies. Under
+  FinCEN's interim final rule (effective March 26, 2025), entities formed
+  in the US are EXEMPT. For a US-formed founder, state plainly that no BOI
+  filing is currently required, and link the
+  [BOI FAQ]({{federal.boi_faq}}) so they can verify (this rule has changed
+  repeatedly — do NOT assert a filing deadline or penalty as settled fact).
 - Estimated quarterly taxes (Form 1040-ES for pass-through entities)
 - [IRS small-business resources]({{federal.irs_small_business}}) — general
   reference link
@@ -124,10 +128,11 @@ Then a short list of supporting practices:
   that fits, with cost range
 
 ## Common pitfalls
-3–5 bullets specific to this founder. Examples: missing the BOI deadline,
-not registering as foreign LLC in operation state, paying contractors
-without W-9s, mixing personal and business expenses, missing estimated
-quarterly tax payments.
+3–5 bullets specific to this founder. Examples: not registering as a
+foreign LLC in the operation state, paying contractors without W-9s,
+mixing personal and business expenses, missing estimated quarterly tax
+payments, assuming a FinCEN BOI filing is still required (US-formed
+entities are exempt under the 2025 rule).
 
 ## 30/60/90-day action plan
 Sequence the work: which compliance items in days 1–30, 31–60, 61–90.
@@ -136,10 +141,11 @@ Sequence the work: which compliance items in days 1–30, 31–60, 61–90.
 
 After producing the sections above, gather EVERY annual deadline you
 mentioned (federal Form 1120/1065/1120-S/1040 due dates, Form 1099-NEC
-Jan 31, Forms 940/941 quarterly deadlines, BOI deadline if not yet
-filed, state annual reports / franchise taxes by state, estimated
-quarterly payments, sales-tax filings) and call
-`generate_compliance_ics(events)` with the full list.
+Jan 31, Forms 940/941 quarterly deadlines, a BOI deadline ONLY if the
+company is a foreign reporting company that must file, state annual
+reports / franchise taxes by state, estimated quarterly payments,
+sales-tax filings) and call `generate_compliance_ics(events)` with the
+full list.
 
 For each event use:
 - `date`: the deadline date for the FIRST upcoming occurrence (e.g.
@@ -170,7 +176,11 @@ Rules:
   give ranges and say "verify."
 - Don't recommend filings the founder doesn't need (e.g. don't mention
   state withholding if they have no employees and no plans to hire).
-- BOI is high-stakes ($500/day penalties) — always mention it.
+- On BOI: under FinCEN's 2025 interim final rule, US-formed entities are
+  exempt and only foreign reporting companies file. Do NOT tell a US-formed
+  founder they owe a BOI filing or quote a "$500/day penalty" as if it
+  applies to them — that advice is out of date. Mention BOI only to confirm
+  the exemption and link the FinCEN FAQ for current status.
 - Use `state_compliance_lookup` tool output as the source of truth for
   state URLs and annual fees. NEVER invent a URL from memory.
 - ALWAYS call `generate_compliance_ics` at the end to produce the

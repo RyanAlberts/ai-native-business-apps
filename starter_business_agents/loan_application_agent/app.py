@@ -11,9 +11,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 import streamlit as st
 
+from core import merge_company
 from core.ui import (
     REQ,
     UNSET,
+    company_loader,
     inject_styles,
     result_actions,
     sticky_header,
@@ -34,11 +36,18 @@ sticky_header(
     caption="Match your business to SBA loans, microloans, grants, and CDFI programs.",
 )
 
+profile = company_loader(key="loan")
+
 with st.form("loan_form"):
     col1, col2 = st.columns(2)
     with col1:
         business = st.text_input(
             "Business (name + what it does)" + REQ,
+            value=(
+                f"{profile.legal_name} — {profile.one_liner}".strip(" —")
+                if profile
+                else ""
+            ),
             placeholder="Acme Bakery — wholesale + retail",
         )
         state = st.text_input("State / city" + REQ, placeholder="Boise, Idaho")
@@ -94,17 +103,17 @@ if submitted:
         }
     )
 
-    full_input = (
-        f"Business: {business.strip()}\n"
-        f"Location: {state.strip()}\n"
-        f"Stage: {stage}\n"
-        f"Funding need: {need.strip()}\n"
-        f"Use of funds: {purpose}\n"
-        f"Founder credit: {credit}\n\n"
-        f"Additional context: {description.strip()}"
+    company = merge_company(
+        profile,
+        one_liner=business.strip(),
+        notes=(
+            f"Business: {business.strip()}. Location: {state.strip()}. "
+            f"Stage: {stage}. Funding need: {need.strip()}. Use of funds: {purpose}. "
+            f"Founder credit: {credit}. Additional context: {description.strip()}"
+        ),
     )
     with st.spinner("Researching funding paths..."):
-        result = asyncio.run(run(full_input))
+        result = asyncio.run(run(company))
 
     result_actions(markdown=result, filename="funding_plan.md", position="top")
     st.markdown(result)

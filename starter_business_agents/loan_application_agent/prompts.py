@@ -57,8 +57,9 @@ programs simultaneously.
 
 ## Common pitfalls (specific to this founder)
 3–5 bullets — examples: under-funding the deficit, mixing personal and
-business credit, missing the BOI deadline, wrong NAICS code, applying
-during peak season at busy SBA lenders, etc.
+business credit, wrong NAICS code, applying during peak season at busy
+SBA lenders, etc. (Do not list a FinCEN BOI deadline as a pitfall —
+US-formed entities are exempt under the 2025 rule.)
 
 ## Disclaimer
 One line: this is not financial or legal advice; speak with a banker or

@@ -60,3 +60,20 @@ def test_ics_emits_valid_vevents():
 def test_ics_escapes_special_chars():
     art = ics_artifact("d.ics", [{"date": "2026-01-01", "summary": "A; B, C"}])
     assert "SUMMARY:A\\; B\\, C" in art.content
+
+
+def test_ics_neutralizes_crlf_injection():
+    # A stray CR/LF in attacker- or LLM-supplied text must not break out of
+    # the content line and inject a new property or VEVENT (RFC 5545 §3.1).
+    art = ics_artifact(
+        "d.ics",
+        [{"date": "2026-01-01", "summary": "Evil\r\nBEGIN:VEVENT\r\nUID:injected"}],
+    )
+    lines = art.content.split("\r\n")
+    # Exactly one real VEVENT line and one real UID line — the injected ones
+    # survive only as escaped text inside the SUMMARY value.
+    assert sum(1 for ln in lines if ln == "BEGIN:VEVENT") == 1
+    assert sum(1 for ln in lines if ln.startswith("UID:")) == 1
+    # No raw CR may appear except as part of a CRLF line ending.
+    assert art.content.count("\r") == art.content.count("\r\n")
+    assert "SUMMARY:Evil\\nBEGIN:VEVENT\\nUID:injected" in art.content
