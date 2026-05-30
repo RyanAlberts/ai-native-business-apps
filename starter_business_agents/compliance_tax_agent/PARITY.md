@@ -4,7 +4,7 @@
 |---|---|
 | Path | `starter_business_agents/compliance_tax_agent/` |
 | Default model | claude-sonnet-4-6 |
-| Last verified | 2026-05-12 |
+| Last verified | 2026-05-30 (re-baselined after the BOI/CTA correctness pass) |
 
 ## 1. Capability parity
 
@@ -27,7 +27,14 @@ nexus thresholds.
 | g4 | FL LLC food truck + catering, $300k, 2 employees | ✅ verified | — | — |
 | g5 | DE C-Corp B2B SaaS, $1.2M, contractors only, no inventory | ✅ verified | — | — |
 
-Claude baseline at `tests/baselines/claude-2026-05-12.md` (~75KB; 5 cases). Re-run with `python scripts/parity_run.py starter_business_agents.compliance_tax_agent`.
+Current Claude baseline: `tests/baselines/claude-2026-05-30.md` (g1 only),
+captured live after the correctness pass — the agent now states US-formed
+entities are exempt from the FinCEN BOI report and no longer quotes a
+"$500/day" BOI penalty. The prior `tests/baselines/claude-2026-05-12.md`
+(5 cases) is retained as the historical pre-correction snapshot. Re-capture
+the full golden set with `python scripts/parity_run.py
+starter_business_agents.compliance_tax_agent` (set `KEEL_PERMISSION_MODE=default`
+if running as root).
 
 ## 3. UX parity
 

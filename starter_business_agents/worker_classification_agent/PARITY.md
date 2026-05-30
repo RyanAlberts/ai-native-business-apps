@@ -2,9 +2,9 @@
 
 | | |
 |---|---|
-| Source | Original work; IRS three-category test + DOL 2024 Final Rule + AB5/MA/NJ ABC tests |
+| Source | Original work; IRS three-category test + DOL 2024 Final Rule (not currently enforced — FAB 2025-1) + AB5/MA/NJ ABC tests |
 | Default model | claude-sonnet-4-6 |
-| Last verified | not yet run end-to-end |
+| Last verified | 2026-05-30 (g1 captured live after the DOL-enforcement / stats correctness pass) |
 
 ## 1. Capability parity (tools × providers)
 
@@ -21,11 +21,15 @@ See `tests/golden.jsonl`.
 
 | ID | Scenario | claude | openai | gemini |
 |---|---|---|---|---|
-| g1 | CA "1099 engineer" in our office on our laptop — clear W-2 + AB5 fail | not yet run | not yet run | not yet run |
+| g1 | CA "1099 engineer" in our office on our laptop — clear W-2 + AB5 fail | ✅ baselined 2026-05-30 | not yet run | not yet run |
 | g2 | Genuine 1099 case: out-of-state freelance designer with own equipment + other clients + flat-fee per project | not yet run | not yet run | not yet run |
 | g3 | Borderline / HIGH RISK in NY: part-time bookkeeper, owns equipment, but only this one client and 30 hours/week | not yet run | not yet run | not yet run |
 | g4 | TX (common-law state, no ABC) — full-time content writer, our equipment, our schedule. Federal says W-2. | not yet run | not yet run | not yet run |
 | g5 | MA construction subcontractor — fails B prong (same trade as hiring entity) | not yet run | not yet run | not yet run |
+
+Baseline: `tests/baselines/claude-2026-05-30.md` (g1), captured live. The
+output now carries the DOL non-enforcement note (FAB 2025-1) and omits the
+previously-hardcoded "40% / $845" statistics.
 
 ## 3. UX parity (Streamlit)
 
