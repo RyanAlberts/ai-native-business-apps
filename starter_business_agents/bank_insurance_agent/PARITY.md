@@ -24,15 +24,15 @@ No tools used. All providers can produce the structured markdown.
 | g4 | Construction subcontractor in TX with 3 employees | ✅ verified | — | — |
 | g5 | Pre-revenue solo consultant in NY | ✅ verified | — | — |
 
-Current Claude baseline: `tests/baselines/claude-2026-05-30.md` (g1 only),
-captured live after the prompt was updated to disambiguate the two
-"beneficial ownership" concepts — the bank's FinCEN CDD onboarding form
-(relevant here) vs. the separate CTA BOI report (US-formed entities exempt
-under the 2025 rule). The new baseline frames the bank CDD step correctly
-and no longer tells founders to file a BOI report. The prior
-`tests/baselines/claude-2026-05-12.md` (5 cases) is kept as the historical
-pre-correction snapshot. Re-capture the full set with `python
-scripts/parity_run.py starter_business_agents.bank_insurance_agent`.
+Current Claude baseline: `tests/baselines/claude-2026-05-30.md` (full
+5-case golden set), captured live after the prompt was updated to
+disambiguate the two "beneficial ownership" concepts — the bank's FinCEN
+CDD onboarding form (relevant here) vs. the separate CTA BOI report
+(US-formed entities exempt under the 2025 rule). The baseline frames the
+bank CDD step correctly and no longer tells founders to file a BOI report.
+The prior `tests/baselines/claude-2026-05-12.md` is kept as the historical
+pre-correction snapshot. Re-capture with `python scripts/parity_run.py
+starter_business_agents.bank_insurance_agent`.
 
 ## 3. UX parity
 

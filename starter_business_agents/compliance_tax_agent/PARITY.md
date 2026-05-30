@@ -27,12 +27,12 @@ nexus thresholds.
 | g4 | FL LLC food truck + catering, $300k, 2 employees | ✅ verified | — | — |
 | g5 | DE C-Corp B2B SaaS, $1.2M, contractors only, no inventory | ✅ verified | — | — |
 
-Current Claude baseline: `tests/baselines/claude-2026-05-30.md` (g1 only),
-captured live after the correctness pass — the agent now states US-formed
-entities are exempt from the FinCEN BOI report and no longer quotes a
-"$500/day" BOI penalty. The prior `tests/baselines/claude-2026-05-12.md`
-(5 cases) is retained as the historical pre-correction snapshot. Re-capture
-the full golden set with `python scripts/parity_run.py
+Current Claude baseline: `tests/baselines/claude-2026-05-30.md` (full
+5-case golden set), captured live after the correctness pass — the agent
+now states US-formed entities are exempt from the FinCEN BOI report and no
+longer quotes a "$500/day" BOI penalty. The prior
+`tests/baselines/claude-2026-05-12.md` is retained as the historical
+pre-correction snapshot. Re-capture with `python scripts/parity_run.py
 starter_business_agents.compliance_tax_agent` (set `KEEL_PERMISSION_MODE=default`
 if running as root).
 
