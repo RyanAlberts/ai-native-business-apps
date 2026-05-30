@@ -298,3 +298,58 @@ def artifact_downloads(artifacts, *, position: str) -> None:
             mime=art.mimetype,
             key=f"art_{position}_{i}",
         )
+
+
+# ── company_loader ────────────────────────────────────────────────────
+
+
+def company_loader(*, key: str = "company"):
+    """Render the optional "reuse your saved company profile" control.
+
+    This is the UI side of the Company spine: the Founding Journey writes a
+    ``company.json`` artifact, and every other app can read it back here so
+    the founder fills facts in once and reuses them across the fleet. The
+    control is a quiet expander (collapsed by default) so single-shot users
+    aren't slowed down.
+
+    Returns a ``core.Company`` when a valid profile is supplied, else
+    ``None``. Pass the result straight to an agent's ``run()`` (which now
+    accepts ``str | Company``), or use it to prefill the form.
+    """
+    # Imported lazily so importing core.ui doesn't pull the whole core spine
+    # at module load (keeps the UI layer light and avoids import cycles).
+    from core import Company, coerce_company
+
+    with st.expander("⚓ Reuse a saved company profile (optional)", expanded=False):
+        st.caption(
+            "Ran the Founding Journey already? Upload the `company.json` it "
+            "produced and these forms will reuse those facts — fill in once, "
+            "use everywhere."
+        )
+        upload = st.file_uploader(
+            "Upload company.json", type=["json"], key=f"{key}_upload"
+        )
+        pasted = st.text_area(
+            "…or paste the JSON",
+            key=f"{key}_paste",
+            height=80,
+            placeholder='{"legal_name": "Northwind Robotics, Inc.", ...}',
+        )
+
+        raw = ""
+        if upload is not None:
+            raw = upload.getvalue().decode("utf-8", errors="replace")
+        elif pasted.strip():
+            raw = pasted
+
+        if not raw.strip():
+            return None
+
+        company = coerce_company(raw)
+        if company is None or company == Company():
+            st.warning("That doesn't look like a valid company.json — ignoring it.")
+            return None
+
+        who = company.legal_name or company.dba or "your company"
+        st.success(f"Loaded profile for **{who}** — its facts will be used below.")
+        return company

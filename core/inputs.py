@@ -25,11 +25,12 @@ stays offline-testable since it never touches the network.
 from __future__ import annotations
 
 import json
+from dataclasses import replace
 from pathlib import Path
 
 from .company import Company
 
-__all__ = ["coerce_company", "build_user_message"]
+__all__ = ["coerce_company", "build_user_message", "merge_company"]
 
 
 def coerce_company(user_input: object) -> Company | None:
@@ -76,17 +77,44 @@ def build_user_message(user_input: object, *, template: str = "{input}") -> str:
             Defaults to passing the text through unchanged.
 
     Returns:
-        The user message — the company profile block (when one is present)
-        followed by the templated free text.
+        The user message: for plain text, the template applied to it; for a
+        profile, the company's ``to_context()`` block (which already renders
+        every known fact, including free-text notes — so we don't re-frame
+        and duplicate them).
     """
     company = coerce_company(user_input)
     if company is not None:
-        prefix = company.to_context()
-        # A structured profile carries no separate "ask"; reuse any free-text
-        # notes / one-liner so a templated agent still has something to frame.
-        body = (company.notes or company.one_liner or "").strip()
-        framed = template.format(input=body) if body else ""
-        return "\n\n".join(part for part in (prefix.strip(), framed.strip()) if part)
+        # The profile block is the authoritative rendering of all known facts
+        # (to_brief covers notes / one_liner too). The agent's system prompt
+        # carries the imperative, so the per-agent template isn't needed here.
+        return company.to_context().strip()
 
     text = user_input.decode() if isinstance(user_input, bytes) else str(user_input)
     return template.format(input=text)
+
+
+def merge_company(base: Company | None, *, notes: str = "", **fields) -> Company:
+    """Layer this form's inputs onto a loaded ``Company`` (or a fresh one).
+
+    The UI pattern: ``company_loader()`` returns a saved profile (or
+    ``None``); the form collects whatever this specific agent asks for. This
+    merges them so the agent's ``run()`` gets one ``Company`` carrying both
+    the reused facts and the form's overrides — only non-empty form values
+    win, so a blank field never wipes a loaded fact.
+
+    Args:
+        base: the loaded profile, or ``None`` to start from an empty Company.
+        notes: free-text "the ask" for this agent (appended to any existing
+            notes rather than replacing them).
+        **fields: ``Company`` field overrides from the form (empty strings
+            and ``None`` are ignored so they don't clobber loaded values).
+
+    Returns:
+        A new ``Company`` (inputs are not mutated).
+    """
+    company = base or Company()
+    updates = {k: v for k, v in fields.items() if v not in ("", None)}
+    if notes.strip():
+        existing = (company.notes or "").strip()
+        updates["notes"] = f"{existing}\n\n{notes.strip()}".strip() if existing else notes.strip()
+    return replace(company, **updates) if updates else company

@@ -24,7 +24,7 @@ from .artifacts import (
 )
 from .util import normalize_state, slugify, state_code
 from .brand import DISCLAIMER, with_disclaimer
-from .inputs import build_user_message, coerce_company
+from .inputs import build_user_message, coerce_company, merge_company
 
 __all__ = [
     "load_config",
@@ -57,4 +57,5 @@ __all__ = [
     # shared run() input handling (the Company spine)
     "build_user_message",
     "coerce_company",
+    "merge_company",
 ]

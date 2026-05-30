@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import json
 
-from core import Company, build_user_message, coerce_company
+from core import Company, build_user_message, coerce_company, merge_company
 
 
 def test_plain_text_passes_through():
@@ -34,11 +34,15 @@ def test_company_profile_is_prepended():
     assert "Northwind Robotics" in out
 
 
-def test_company_notes_fill_the_template():
+def test_company_notes_render_in_profile_block():
+    # A Company renders its full profile (notes included); the template is
+    # not applied to a structured profile, so notes appear once, not twice.
     c = Company(legal_name="Acme, LLC", notes="Need a mutual NDA")
     out = build_user_message(c, template="Request:\n\n{input}")
     assert "Known company profile" in out
-    assert "Request:\n\nNeed a mutual NDA" in out
+    assert "Need a mutual NDA" in out
+    assert out.count("Need a mutual NDA") == 1
+    assert "Request:" not in out  # template is for free text only
 
 
 def test_dict_is_coerced_to_company():
@@ -65,3 +69,35 @@ def test_company_json_path_is_loaded(tmp_path):
 def test_empty_company_yields_empty_message():
     # No known facts and no notes → nothing to prepend or frame.
     assert build_user_message(Company()) == ""
+
+
+# ── merge_company (the UI form → agent bridge) ─────────────────────────
+
+
+def test_merge_onto_none_starts_fresh():
+    c = merge_company(None, legal_name="Acme, LLC", funding_stage="Bootstrap")
+    assert c.legal_name == "Acme, LLC"
+    assert c.funding_stage == "Bootstrap"
+
+
+def test_merge_blank_does_not_clobber_loaded_value():
+    base = Company(legal_name="Loaded Co", home_state="California")
+    merged = merge_company(base, legal_name="", home_state="Texas")
+    # Blank legal_name is ignored; non-empty home_state overrides.
+    assert merged.legal_name == "Loaded Co"
+    assert merged.home_state == "Texas"
+
+
+def test_merge_appends_notes_without_replacing():
+    base = Company(legal_name="Acme", notes="Existing note.")
+    merged = merge_company(base, notes="New ask.")
+    assert "Existing note." in merged.notes
+    assert "New ask." in merged.notes
+
+
+def test_merge_does_not_mutate_base():
+    base = Company(legal_name="Acme")
+    merge_company(base, funding_stage="Seed", notes="x")
+    # Original is untouched (replace returns a new instance).
+    assert base.funding_stage == ""
+    assert base.notes == ""
