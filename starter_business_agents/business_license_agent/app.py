@@ -11,8 +11,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 import streamlit as st
 
+from core import merge_company
 from core.ui import (
     REQ,
+    company_loader,
     inject_styles,
     result_actions,
     sticky_header,
@@ -35,6 +37,8 @@ sticky_header(
         "state / county / city level. Replaces $99–$300/location services."
     ),
 )
+
+profile = company_loader(key="business_license")
 
 with st.form("license_form"):
     cols = st.columns(2)
@@ -133,12 +137,15 @@ if submitted:
         f"Sells tangible goods: {'Yes' if sells_goods else 'No'}\n"
         f"Industry-specific triggers: {triggers}"
     )
+    # Fold the form into a loaded profile (if any) so the agent has company
+    # context too; otherwise send the licensing prompt as free text.
+    agent_input = merge_company(profile, notes=prompt) if profile else prompt
     with st.spinner(
         "Identifying licenses + permits across federal / state / county / "
         "city. Using WebSearch for city- and county-specific requirements — "
         "30-60 seconds."
     ):
-        result = asyncio.run(run(prompt))
+        result = asyncio.run(run(agent_input))
 
     filename = f"license-checklist-{city.strip().replace(' ', '-').lower()}.md"
     result_actions(markdown=result, filename=filename, position="top")
