@@ -12,8 +12,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 import streamlit as st
 
+from core import merge_company
 from core.ui import (
     REQ,
+    company_loader,
     inject_styles,
     result_actions,
     sticky_header,
@@ -35,6 +37,8 @@ sticky_header(
     ),
 )
 
+profile = company_loader(key="election_83b")
+
 with st.form("election_83b_form"):
     st.markdown("### Your situation")
     cols = st.columns(2)
@@ -50,13 +54,18 @@ with st.form("election_83b_form"):
         )
     with cols[1]:
         issuer_name = st.text_input(
-            "Issuer (company) name" + REQ, placeholder="Acme Books Inc."
+            "Issuer (company) name" + REQ,
+            value=(profile.legal_name if profile else ""),
+            placeholder="Acme Books Inc.",
         )
         issuer_state = st.text_input(
-            "Issuer state of formation" + REQ, placeholder="Delaware"
+            "Issuer state of formation" + REQ,
+            value=(profile.state_of_formation if profile else ""),
+            placeholder="Delaware",
         )
         issuer_ein = st.text_input(
             "Issuer EIN",
+            value=(profile.ein if profile else ""),
             placeholder="88-1234567",
             help="Optional. Leave blank if you don't have the EIN yet.",
         )
@@ -124,8 +133,9 @@ if submitted:
         f"Restrictions: {restrictions.strip()}\n"
         "I have not yet filled in my TIN/SSN — leave a placeholder for me."
     )
+    agent_input = merge_company(profile, notes=prompt) if profile else prompt
     with st.spinner("Preparing your 83(b) election letter and mailing kit..."):
-        result = asyncio.run(run(prompt))
+        result = asyncio.run(run(agent_input))
 
     filename = f"83b-election-{grant_date.isoformat()}.md"
     result_actions(markdown=result, filename=filename, position="top")

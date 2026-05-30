@@ -11,8 +11,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 import streamlit as st
 
+from core import merge_company
 from core.ui import (
     REQ,
+    company_loader,
     inject_styles,
     result_actions,
     sticky_header,
@@ -31,11 +33,13 @@ sticky_header(
     emoji="👥",
     title="Worker Classification Agent — 1099 or W-2?",
     caption=(
-        "40% of small businesses get hit with payroll misclassification findings. "
-        "Applies IRS + DOL 2024 + state-specific tests (AB5, MA, NJ) and gives "
-        "you a verdict + risk score + the right contract type."
+        "Misclassifying a worker is a common, expensive payroll mistake. "
+        "Applies the IRS + DOL economic-reality + state-specific tests (AB5, "
+        "MA, NJ) and gives you a verdict + risk score + the right contract type."
     ),
 )
+
+profile = company_loader(key="worker_classification")
 
 with st.form("worker_classification_form"):
     role = st.text_input(
@@ -132,8 +136,12 @@ if submitted:
         f"Is role core to the business: {'Yes' if is_core else 'No'}.\n"
         f"Additional context: {extra.strip() or '(none)'}"
     )
+    # If a company profile was loaded, fold the role details into it so the
+    # agent gets both the company context and the classification request;
+    # otherwise just send the role prompt as free text.
+    agent_input = merge_company(profile, notes=prompt) if profile else prompt
     with st.spinner("Applying IRS + DOL + state tests..."):
-        result = asyncio.run(run(prompt))
+        result = asyncio.run(run(agent_input))
 
     filename = f"classification-{role.strip().replace(' ', '-').lower()}.md"
     result_actions(markdown=result, filename=filename, position="top")

@@ -19,20 +19,25 @@ from __future__ import annotations
 
 import asyncio
 
-from core import get_llm, load_config
+from core import build_user_message, get_llm, load_config
 
 from .prompts import SYSTEM_PROMPT
 from .tools import all_tools
 
 
-async def run(founder_input: str) -> str:
-    """Produce a city/county/state/federal license + permit + DBA checklist."""
+async def run(founder_input) -> str:
+    """Produce a city/county/state/federal license + permit + DBA checklist.
+
+    Accepts free text or a shared ``Company`` profile (dict / ``company.json``
+    path / raw JSON also work); known facts are threaded in automatically.
+    """
     config = load_config(__file__)
     llm = get_llm(config)
     return await llm.complete(
         system_prompt=SYSTEM_PROMPT,
-        user_message=(
-            f"What licenses and permits do I need?\n\n{founder_input}"
+        user_message=build_user_message(
+            founder_input,
+            template="What licenses and permits do I need?\n\n{input}",
         ),
         tools=all_tools(),
     )

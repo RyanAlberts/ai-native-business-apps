@@ -11,8 +11,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 import streamlit as st
 
+from core import merge_company
 from core.ui import (
     REQ,
+    company_loader,
     inject_styles,
     result_actions,
     sticky_header,
@@ -36,6 +38,8 @@ sticky_header(
     ),
 )
 
+profile = company_loader(key="delaware_franchise")
+
 entity_type = st.radio(
     "Entity type" + REQ,
     options=["C-Corp / S-Corp", "LLC / LP / GP"],
@@ -45,8 +49,10 @@ entity_type = st.radio(
 # ── LLC path — flat $300 fee, single button ───────────────────────────
 if entity_type.startswith("LLC"):
     if st.button("Create my LLC tax answer", type="primary"):
+        llc_q = "I'm a Delaware LLC. What do I owe?"
+        agent_input = merge_company(profile, notes=llc_q) if profile else llc_q
         with st.spinner("Computing..."):
-            result = asyncio.run(run("I'm a Delaware LLC. What do I owe?"))
+            result = asyncio.run(run(agent_input))
 
         result_actions(
             markdown=result, filename="de-franchise-tax-llc.md", position="top"
@@ -109,8 +115,9 @@ else:
             f"Issued: {issued:,} shares. Par value: ${par:.4f}/share. "
             f"Total gross assets at year-end: ${assets:,.2f}.{bill_clause}"
         )
+        agent_input = merge_company(profile, notes=prompt) if profile else prompt
         with st.spinner("Recomputing under both methods..."):
-            result = asyncio.run(run(prompt))
+            result = asyncio.run(run(agent_input))
 
         result_actions(
             markdown=result, filename="de-franchise-tax-corp.md", position="top"

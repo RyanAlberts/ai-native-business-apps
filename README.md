@@ -21,6 +21,8 @@
 
 > **A keel** is the structural backbone laid down first when building a ship — everything else is built on it. Keel is what you lay down first when building a company.
 
+> ⚠️ **Not legal, tax, or financial advice.** Keel generates drafts and general guidance to get you most of the way there. Verify everything against official sources and have a licensed professional review it before you file or act. Laws change and the agents can be wrong.
+
 ## ⚡ TL;DR
 
 ```bash

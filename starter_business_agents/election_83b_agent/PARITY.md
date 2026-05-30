@@ -4,7 +4,7 @@
 |---|---|
 | Source | Original work (motivated by Stripe Atlas's Auto-83(b) being closed-source and formation-bundled) |
 | Default model | claude-sonnet-4-6 |
-| Last verified | not yet run end-to-end |
+| Last verified | 2026-05-30 (full 5-case set captured live after the TD 9779 / Form-1040 correctness pass) |
 
 ## 1. Capability parity (tools × providers)
 
@@ -22,11 +22,16 @@ See `tests/golden.jsonl`.
 
 | ID | Scenario | claude | openai | gemini |
 |---|---|---|---|---|
-| g1 | Solo founder, fresh DE C-Corp, FMV == price paid, ~25 days remaining | not yet run | not yet run | not yet run |
-| g2 | Married-filing-jointly cofounder pair, vesting acceleration on change of control | not yet run | not yet run | not yet run |
-| g3 | Grant 22 days ago — urgent (`NEAR` window) | not yet run | not yet run | not yet run |
-| g4 | Grant 45 days ago — `EXPIRED`; agent must recommend §9100 path | not yet run | not yet run | not yet run |
-| g5 | Non-US founder with ITIN — flag complexity, recommend specialized advice | not yet run | not yet run | not yet run |
+| g1 | Solo founder, fresh DE C-Corp, FMV == price paid, ~25 days remaining | ✅ baselined 2026-05-30 | not yet run | not yet run |
+| g2 | Married-filing-jointly cofounder pair, vesting acceleration on change of control | ✅ baselined 2026-05-30 | not yet run | not yet run |
+| g3 | Grant 22 days ago — urgent (`NEAR` window) | ✅ baselined 2026-05-30 | not yet run | not yet run |
+| g4 | Grant 45 days ago — `EXPIRED`; agent must recommend §9100 path | ✅ baselined 2026-05-30 | not yet run | not yet run |
+| g5 | Non-US founder with ITIN — flag complexity, recommend specialized advice | ✅ baselined 2026-05-30 | not yet run | not yet run |
+
+Baseline: `tests/baselines/claude-2026-05-30.md` (full 5-case set),
+captured live. The post-filing checklist now correctly states you do NOT
+attach the election to Form 1040 (TD 9779, 2016); the EXPIRED-window case
+(g4) explicitly tells the founder not to attach a non-existent election.
 
 ## 3. UX parity (Streamlit)
 

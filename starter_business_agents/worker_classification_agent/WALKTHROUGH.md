@@ -127,12 +127,15 @@ If the founder ignores the recommendation and pays as 1099 anyway:
 
 ## Why this matters more than founders think
 
-The research is unambiguous on this one. From the founder pain-points
-research:
+Misclassification is one of the most common and expensive payroll
+mistakes in early-stage company building: a finding can mean back
+payroll taxes, penalties, and multi-year retroactive assessments — and
+signing an "Independent Contractor Agreement" does NOT settle the issue;
+courts and agencies look at actual control, not the contract label.
 
-> 40% of small businesses get fined annually (avg $845) for payroll-
-> related misclassification. Signing an IC agreement does NOT settle
-> the issue; courts look at actual control.
+(We deliberately don't quote a specific audit-rate or average-penalty
+figure — those numbers vary widely by source and year and are easy to
+get wrong. The point stands without a false-precision statistic.)
 
 This is one of the most common, lowest-friction-to-make-correctly,
 highest-cost-to-screw-up decisions in early-stage company building.

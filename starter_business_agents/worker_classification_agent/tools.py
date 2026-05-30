@@ -137,11 +137,20 @@ def _classification_tests_reference(_args: dict) -> dict:
         "dol_2024_economic_reality_test": {
             "source_url": _DOL_2024_URL,
             "effective": "March 11, 2024",
+            "enforcement_status": (
+                "IN FLUX — DOL announced in Field Assistance Bulletin 2025-1 "
+                "(May 1, 2025) that it is NOT currently enforcing the 2024 "
+                "rule while it reconsiders the regulation. Treat the six "
+                "factors as an analytical framework, not actively-enforced "
+                "federal policy."
+            ),
             "summary": (
-                "DOL Final Rule restored the traditional six-factor "
+                "The 2024 DOL Final Rule restored the traditional six-factor "
                 "economic-reality test for FLSA (wage-and-hour) "
-                "classification. Totality-of-the-circumstances analysis, "
-                "no single factor controls."
+                "classification (totality-of-the-circumstances, no single "
+                "factor controls). See enforcement_status — the IRS "
+                "common-law test and state-law tests are the more reliable "
+                "anchors for a verdict."
             ),
             "factors": _DOL_2024_ECONOMIC_REALITY_FACTORS,
         },
