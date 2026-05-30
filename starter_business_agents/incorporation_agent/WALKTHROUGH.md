@@ -20,13 +20,15 @@ The agent returns a markdown plan with:
    "Form a single-member LLC in Florida" — one sentence.
 2. **Entity type** — why LLC vs S-Corp vs C-Corp for *this* founder.
 3. **State of formation** — Florida (not the cargo-cult Delaware answer).
-4. **Filing checklist** — 10 concrete steps with URLs (sunbiz.org, irs.gov/EIN,
-   fincen.gov/boi) and dollar amounts (~$125 Articles, free EIN, etc.)
+4. **Filing checklist** — 10 concrete steps with URLs (sunbiz.org, irs.gov/EIN)
+   and dollar amounts (~$125 Articles, free EIN, etc.), including a check on
+   FinCEN BOI status (US-formed entities are exempt under the 2025 rule).
 5. **Registered agent options** — 3 services with costs, plus "act as your own"
    if applicable.
 6. **Estimated costs table** — total range, line by line.
 7. **Pitfalls specific to this founder** — commingling funds, no client
-   agreement, missing BOI deadline, skipping E&O insurance.
+   agreement, BOI confusion (US-formed entities are now exempt), skipping
+   E&O insurance.
 8. **Disclaimer** — not legal advice.
 
 ## How it works
