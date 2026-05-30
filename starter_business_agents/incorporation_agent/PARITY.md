@@ -4,7 +4,7 @@
 |---|---|
 | Path | `starter_business_agents/incorporation_agent/` |
 | Default model | claude-sonnet-4-6 |
-| Last verified | 2026-05-12 (post-feedback rev) |
+| Last verified | 2026-05-30 (re-baselined after the BOI/CTA correctness pass) |
 
 ## 1. Capability parity (tools × providers)
 
@@ -34,7 +34,11 @@ See `tests/golden.jsonl`.
 | g5 | Solo WY, drop-shipping, product liability | not run | not run | not run |
 
 Baseline captures:
-- `tests/baselines/claude-2026-05-12-smoke.md` — Texas SaaS w/ "Acme Books"
+- `tests/baselines/claude-2026-05-30.md` — current capture (g1), taken after
+  the BOI/CTA correctness pass; the agent now states US-formed entities are
+  exempt from the FinCEN BOI report (2025 interim final rule).
+- `tests/baselines/claude-2026-05-12-smoke.md` — historical pre-correction
+  snapshot; Texas SaaS w/ "Acme Books"
   name; verifies the new tools (state portal lookup + name-search URL) fire
   end-to-end, disclaimer is at top, Key Documents & Artifacts table renders,
   RA section covers all three categories incl. LegalZoom.
