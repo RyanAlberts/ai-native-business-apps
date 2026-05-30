@@ -87,15 +87,7 @@ class ClaudeClient(LLMClient):
             system_prompt=system_prompt,
             mcp_servers=mcp_servers,
             allowed_tools=allowed,
-            # `bypassPermissions` is right for an unattended agent on a
-            # normal user account, but the underlying CLI refuses it under
-            # root/sudo. Allow an override via config (extra.permission_mode)
-            # or the KEEL_PERMISSION_MODE env var so the agents also run in
-            # root containers / CI without editing every config.yaml.
-            permission_mode=self.config.extra.get(
-                "permission_mode",
-                os.environ.get("KEEL_PERMISSION_MODE", "bypassPermissions"),
-            ),
+            permission_mode=self._permission_mode(),
             max_turns=self.config.extra.get("max_turns", 25),
             # Isolate from host environment: don't auto-load the user's
             # global / project / local Claude settings (skills, plugins,
@@ -114,6 +106,31 @@ class ClaudeClient(LLMClient):
                     if isinstance(block, TextBlock):
                         last_text = block.text
         return last_text
+
+    def _permission_mode(self) -> str:
+        """Resolve the SDK permission mode, safely for root environments.
+
+        Default is ``bypassPermissions`` — right for an unattended agent on a
+        normal user account. But the underlying ``claude`` CLI refuses
+        ``--dangerously-skip-permissions`` under root/sudo and exits 1, so a
+        plain ``bypassPermissions`` default would make every agent fail in
+        root containers / CI out of the box.
+
+        Resolution order:
+          1. An explicit ``extra.permission_mode`` in config.yaml always wins.
+          2. Else the ``KEEL_PERMISSION_MODE`` env var, if set — lets you
+             override every agent at once without editing each config.yaml.
+          3. Otherwise default to ``bypassPermissions``, but transparently
+             downgrade to ``default`` when running as root so the agent still
+             runs instead of crashing.
+        """
+        explicit = self.config.extra.get("permission_mode") or os.environ.get(
+            "KEEL_PERMISSION_MODE"
+        )
+        if explicit:
+            return explicit
+        is_root = hasattr(os, "geteuid") and os.geteuid() == 0
+        return "default" if is_root else "bypassPermissions"
 
     def _build_tools(
         self, tools: list[Tool] | None
