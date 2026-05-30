@@ -202,7 +202,11 @@ def deadlines_for(company: Company) -> list[dict]:
 
     # Delaware C-Corp franchise tax + annual report: due March 1.
     if code == "DE" and "corp" in (company.entity_type or "").lower():
-        year = (date.today().year) + 1
+        # Use this year's March 1 if it hasn't passed yet, otherwise next
+        # year's. The naive ``year + 1`` skipped an imminent deadline for
+        # anyone viewing between Jan 1 and March 1.
+        today = date.today()
+        year = today.year if today <= date(today.year, 3, 1) else today.year + 1
         events.append(
             {
                 "date": f"{year}-03-01",
