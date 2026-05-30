@@ -154,8 +154,10 @@ A numbered list:
    postmarking. Addresses do change.
 5. Mail a second signed copy to the issuer (the company that granted
    the stock) — the regulation requires the taxpayer to provide a copy.
-6. Keep a third unsigned copy for your records. Attach it to your
-   personal tax return for the year of transfer.
+6. Keep a third copy for your permanent records. NOTE: since IRS
+   regulations were amended in 2016 (TD 9779), you no longer attach the
+   83(b) election to your annual income tax return — keep your copy and
+   the certified-mail receipt as proof instead.
 7. (Optional, since 2024:) Instead of mailing, file electronically using
    IRS Form 15620 at `{e_file_option_url}`. The e-file option preserves
    the same 30-day deadline; the postmark-by-date applies equally.
@@ -202,9 +204,10 @@ tranche).
 - [ ] Keep the certified-mail receipt PERMANENTLY (proof of timely
       postmark; you may need it years from now in an audit or M&A
       diligence).
-- [ ] Attach a copy of the signed election letter to your Form 1040 for
-      the tax year of the transfer (current IRS instructions; verify
-      before filing).
+- [ ] Keep a copy of the signed election letter with your permanent tax
+      records. (You do NOT attach it to your Form 1040 — that requirement
+      was removed by TD 9779 in 2016. The certified-mail receipt is your
+      proof of timely filing.)
 - [ ] Update your cap table to note that an 83(b) was filed (cap-table
       tools like Carta / Pulley have a field for this).
 - [ ] Tell your CPA the next time you talk.

@@ -31,9 +31,9 @@ sticky_header(
     emoji="👥",
     title="Worker Classification Agent — 1099 or W-2?",
     caption=(
-        "40% of small businesses get hit with payroll misclassification findings. "
-        "Applies IRS + DOL 2024 + state-specific tests (AB5, MA, NJ) and gives "
-        "you a verdict + risk score + the right contract type."
+        "Misclassifying a worker is a common, expensive payroll mistake. "
+        "Applies the IRS + DOL economic-reality + state-specific tests (AB5, "
+        "MA, NJ) and gives you a verdict + risk score + the right contract type."
     ),
 )
 

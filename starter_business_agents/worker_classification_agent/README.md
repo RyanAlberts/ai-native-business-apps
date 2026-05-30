@@ -10,11 +10,11 @@ review.
 
 ## The pain
 
-The research finding behind this agent: ~40% of US small businesses get
-a payroll-misclassification finding in an IRS or state DOL audit.
-Average penalty: $845. Plus retroactive payroll-tax assessments going
-back multiple years. Plus state penalties (California: up to $25K per
-worker; New Jersey: $2,500 first-offense civil per worker; etc.).
+Misclassification is one of the most common and expensive payroll
+mistakes founders make. A finding in an IRS or state audit can mean back
+payroll-tax assessments going back multiple years, plus state penalties
+(California: up to $25K per worker; New Jersey: $2,500 first-offense
+civil per worker; etc.).
 
 The founder mistake everyone makes: treating a full-time role as 1099 to
 avoid payroll burden. Calling someone an "independent contractor" in a
@@ -27,8 +27,11 @@ Applies three layered tests:
 
 1. **IRS three-category common-law test** — behavioral control,
    financial control, relationship of the parties.
-2. **DOL 2024 six-factor economic-reality test** (effective March 11,
-   2024) — for FLSA wage-and-hour classification.
+2. **DOL six-factor economic-reality test** (2024 Final Rule, effective
+   March 11, 2024) — for FLSA wage-and-hour classification. Note: the DOL
+   announced in 2025 (FAB 2025-1) that it is not currently enforcing this
+   rule, so the agent treats it as an analytical framework rather than
+   actively-enforced policy.
 3. **State-specific overrides** — California ABC test (AB5),
    Massachusetts ABC test, New Jersey ABC test, Illinois ABC test
    (construction), New York Freelance Isn't Free Act.
