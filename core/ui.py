@@ -39,6 +39,8 @@ from __future__ import annotations
 import streamlit as st
 import streamlit.components.v1 as components
 
+from core.brand import DISCLAIMER, with_disclaimer
+
 
 # ── Public constants ──────────────────────────────────────────────────
 
@@ -80,6 +82,13 @@ _STYLES = """
     font-size: 0.9rem;
     opacity: 0.85;
     color: inherit;
+}
+/* The legal disclaimer line — present on every page but deliberately
+   quiet (smaller + dimmer) so it informs without nagging. */
+.ai-sticky .ai-disclaimer {
+    margin: 0.4rem 0 0 0;
+    font-size: 0.72rem;
+    opacity: 0.6;
 }
 
 /* Dark mode — Streamlit's default dark background is rgb(14, 17, 23). */
@@ -147,6 +156,7 @@ def sticky_header(*, emoji: str, title: str, caption: str) -> None:
     <h1>{emoji} {title}</h1>
     <p>{caption} All fields marked with
        <span style="color:#ef4444">*</span> are required.</p>
+    <p class="ai-disclaimer">⚠️ {DISCLAIMER}</p>
 </div>
 """,
         unsafe_allow_html=True,
@@ -261,7 +271,10 @@ def result_actions(*, markdown: str, filename: str, position: str) -> None:
     print_button(key=position)
     st.download_button(
         "📄 Download as markdown",
-        markdown,
+        # Carry the disclaimer into the exported file so a printed/emailed
+        # plan still says "verify this" once it leaves the app. Idempotent,
+        # so calling result_actions twice per page won't stack footers.
+        with_disclaimer(markdown),
         file_name=filename,
         key=f"dl_{position}",
     )
