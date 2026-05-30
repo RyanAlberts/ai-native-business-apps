@@ -265,3 +265,23 @@ def result_actions(*, markdown: str, filename: str, position: str) -> None:
         file_name=filename,
         key=f"dl_{position}",
     )
+
+
+# ── artifact_downloads ────────────────────────────────────────────────
+
+
+def artifact_downloads(artifacts, *, position: str) -> None:
+    """Render one download button per prepare-to-submit artifact.
+
+    Args:
+        artifacts: an iterable of ``core.Artifact`` (e.g. an ``ArtifactSet``).
+        position: unique suffix for Streamlit keys ("top"/"bottom"/…).
+    """
+    for i, art in enumerate(artifacts):
+        st.download_button(
+            f"⬇️ {art.label or art.filename}",
+            art.content,
+            file_name=art.filename,
+            mime=art.mimetype,
+            key=f"art_{position}_{i}",
+        )

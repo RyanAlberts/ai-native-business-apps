@@ -23,15 +23,33 @@ website setup, supplier sourcing, legal docs, etc.).
 
 ```
 core/
-├── llm/            # Provider abstraction (Claude verified, others stubbed)
-├── harness/        # Reusable patterns (SequentialHarness shipped)
+├── company.py      # Shared Company profile — the spine threaded across agents
+├── artifacts.py    # Prepare-to-submit deliverables (md / printable HTML / .ics)
+├── util.py         # Canonical normalize_state / state_code / slugify (dedup)
+├── brand.py        # Product name in ONE place (brand layer; slug unchanged)
+├── llm/            # Provider abstraction (Claude verified, others working/stub)
+├── harness/        # Reusable patterns (Sequential + Parallel shipped)
 ├── tools/          # Shared MCP-style Tools
+├── state_portals.py# Hand-curated 50-state + federal portal links & fees
+├── ui.py           # Shared Streamlit UX contract (+ artifact_downloads)
 └── config.py       # YAML loader
 
 agents/             # Two top-level buckets:
 ├── starter_business_agents/         # single-agent apps
 └── advanced_business_agents/        # multi-agent / sequential
+    └── multi_agent_apps/founding_journey/  # ⭐ flagship orchestrator
 ```
+
+The **product name is "Keel"** (`core/brand.py`) — a brand layer only; the
+GitHub slug (`ai-native-business-apps`) and Python package names are
+unchanged so installs/links don't break. The CLI ships as both `keel` and
+the legacy `agent`.
+
+The **Founding Journey** threads a single `Company` through the core
+formation agents in real-world order and synthesizes a Day-0 packet. It
+composes each starter agent's real `SYSTEM_PROMPT` + `all_tools` under one
+injectable `LLMClient` (DRY + offline-testable) — it does NOT call their
+`run()`.
 
 Each agent folder is self-contained:
 ```
