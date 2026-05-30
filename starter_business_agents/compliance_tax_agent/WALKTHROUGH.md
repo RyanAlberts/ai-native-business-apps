@@ -20,7 +20,8 @@ and Amazon FBA. You get:
 3. **State business registrations** — foreign-LLC, sales tax permits, SUI
    if hiring.
 4. **Federal filings** — quarterly estimated taxes, annual 1065/1120-S,
-   1099-NEC for contractors, BOI with FinCEN.
+   1099-NEC for contractors. (FinCEN BOI is only for foreign reporting
+   companies — US-formed entities are exempt under the 2025 rule.)
 5. **State filings per state** — CA Statement of Information, DE franchise
    tax, sales tax returns per registered state.
 6. **Bookkeeping setup** — usually QuickBooks Online for accountant

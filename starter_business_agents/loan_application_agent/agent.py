@@ -5,19 +5,20 @@ from __future__ import annotations
 
 import asyncio
 
-from core import get_llm, load_config
+from core import build_user_message, get_llm, load_config
 
 from .prompts import SYSTEM_PROMPT
 from .tools import all_tools
 
 
-async def run(founder_description: str) -> str:
+async def run(founder_description) -> str:
     """Match a founder to small-business funding programs and prep package.
 
     Args:
-        founder_description: Free-text covering the business, stage,
-            current revenue, funding amount needed, what it's for,
-            founder credit / collateral situation, location.
+        founder_description: a free-text description, or a shared ``Company``
+            profile (also accepts a dict, a ``company.json`` path, or raw
+            JSON). When a profile is given, its facts are threaded in so the
+            agent doesn't re-ask for them.
 
     Returns:
         Markdown with sections per `prompts.SYSTEM_PROMPT`.
@@ -26,7 +27,7 @@ async def run(founder_description: str) -> str:
     llm = get_llm(config)
     return await llm.complete(
         system_prompt=SYSTEM_PROMPT,
-        user_message=founder_description,
+        user_message=build_user_message(founder_description),
         tools=all_tools(),
     )
 

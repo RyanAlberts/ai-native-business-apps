@@ -24,25 +24,30 @@ from __future__ import annotations
 
 import asyncio
 
-from core import get_llm, load_config
+from core import build_user_message, get_llm, load_config
 
 from .prompts import SYSTEM_PROMPT
 from .tools import all_tools
 
 
-async def run(founder_input: str) -> str:
+async def run(founder_input) -> str:
     """Prepare a §83(b) election letter, deadline check, and mailing kit.
 
-    `founder_input` should describe (in free text) the founder, the company,
-    the shares received, the date of grant, the FMV, the price paid, and the
-    vesting / repurchase restrictions. The agent will ask clarifying questions
-    in its output if anything is missing rather than fabricating values.
+    `founder_input` should describe the founder, the company, the shares
+    received, the date of grant, the FMV, the price paid, and the vesting /
+    repurchase restrictions. It accepts free text or a shared ``Company``
+    profile (dict / ``company.json`` path / raw JSON also work) — known facts
+    are threaded in. The agent asks clarifying questions in its output if
+    anything is missing rather than fabricating values.
     """
     config = load_config(__file__)
     llm = get_llm(config)
     return await llm.complete(
         system_prompt=SYSTEM_PROMPT,
-        user_message=f"Prepare an 83(b) election for this situation:\n\n{founder_input}",
+        user_message=build_user_message(
+            founder_input,
+            template="Prepare an 83(b) election for this situation:\n\n{input}",
+        ),
         tools=all_tools(),
     )
 

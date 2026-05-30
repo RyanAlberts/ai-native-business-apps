@@ -79,8 +79,14 @@ outputs. Example:
 3. Designate a registered agent (see Registered Agent Options below).
 4. Apply for an EIN at the [IRS EIN online portal]({{federal.ein_application
    from tool}}) — free, ~15 minutes.
-5. File a BOI report with [FinCEN]({{federal.boi_filing from tool}}) within
-   90 days of formation (post–Corporate Transparency Act).
+5. Confirm Corporate Transparency Act status: under FinCEN's interim final
+   rule (effective March 26, 2025) entities formed in the US are EXEMPT from
+   the Beneficial Ownership Information (BOI) report — only foreign companies
+   registered to do business in the US must file. For a US-formed company,
+   tell the founder no BOI filing is required, and point them at the
+   [FinCEN BOI FAQ]({{federal.boi_faq from tool}}) to confirm current status
+   (rules here have changed repeatedly — never state a filing deadline as
+   settled fact).
 6. ... operating agreement, business license, sales-tax registration if
    applicable.
 
@@ -98,7 +104,9 @@ Rows typically include (adapt to entity + state):
 - Articles of Organization (or Certificate of Formation in TX/etc.)
 - Operating Agreement — distinguish single-member vs multi-member
 - EIN Confirmation Letter (IRS CP 575)
-- BOI Report (FinCEN, post-CTA)
+- BOI Report (FinCEN) — only for FOREIGN reporting companies; US-formed
+  entities are exempt under the 2025 interim final rule. Mark "Required?"
+  as "No (US-formed) — verify on FinCEN FAQ" unless the company is foreign.
 - Registered Agent Designation
 - Initial Resolutions / Member Consent (multi-member only)
 - Annual Report (or franchise tax filing — state-dependent)
@@ -112,7 +120,7 @@ generic prompts. Examples:
   LLC?"
 - "Draft me an Operating Agreement clause for unanimous consent on capital
   calls in a 2-member LLC."
-- "Walk me through filing my BOI report — what info do I need ready?"
+- "Does my US-formed LLC actually have to file a FinCEN BOI report in 2026?"
 - "What's the difference between S-Corp election timing if I file Form 2553
   immediately vs. wait until I have revenue?"
 
@@ -174,7 +182,8 @@ Roll up using fees from `state_portal_lookup`:
 - Registered-agent year 1 (cite category from above)
 - EIN (free)
 - Operating agreement drafting (DIY: $0 / template: ~$50 / attorney: $300–$1,500)
-- BOI filing (free, FinCEN)
+- BOI filing — $0; not required for US-formed entities (2025 rule). Omit
+  the line entirely unless the company is a foreign reporting company.
 - Business license / tax receipt (varies by city)
 - Annual / biennial maintenance fee (state-specific)
 
@@ -182,11 +191,12 @@ Give a total range (e.g. "$200–$2,000 to form + $100–$500/year").
 
 ## Common pitfalls
 3–5 short bullets specific to THIS founder's situation. Example pitfalls:
-piercing the corporate veil with commingled finances, missing the BOI
-deadline (90 days from formation), wrong tax election timing, hiring
-contractors before EIN issuance, NY publication requirement, California
-$800 franchise tax floor, etc. Tie each pitfall to the founder's stated
-plans where possible.
+piercing the corporate veil with commingled finances, assuming a FinCEN
+BOI filing is required when US-formed entities are now exempt (or the
+reverse — assuming exemption if the company is foreign-registered), wrong
+tax election timing, hiring contractors before EIN issuance, NY publication
+requirement, California $800 franchise tax floor, etc. Tie each pitfall to
+the founder's stated plans where possible.
 
 Rules:
 - Be specific to THIS founder. Don't dump generic incorporation theory.

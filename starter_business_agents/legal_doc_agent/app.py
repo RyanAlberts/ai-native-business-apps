@@ -11,9 +11,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 import streamlit as st
 
+from core import merge_company
 from core.ui import (
     REQ,
     UNSET,
+    company_loader,
     inject_styles,
     result_actions,
     sticky_header,
@@ -47,15 +49,28 @@ sticky_header(
     caption="Operating agreements, NDAs, IP assignments, ToS — templates for attorney review.",
 )
 
+profile = company_loader(key="legal_doc")
+
 with st.form("legal_doc_form"):
     doc_type = st.selectbox("Document type" + REQ, DOC_TYPES)
     business = st.text_input(
         "Your business (name + what it does)" + REQ,
+        value=(
+            f"{profile.legal_name} — {profile.one_liner}".strip(" —")
+            if profile
+            else ""
+        ),
         placeholder="Acme Labs LLC — software consultancy",
     )
-    state = st.text_input("State of formation" + REQ, placeholder="Delaware")
+    state = st.text_input(
+        "State of formation" + REQ,
+        value=(profile.state_of_formation if profile else ""),
+        placeholder="Delaware",
+    )
     operating_state = st.text_input(
-        "State(s) of operation" + REQ, placeholder="California"
+        "State(s) of operation" + REQ,
+        value=(profile.home_state if profile else ""),
+        placeholder="California",
     )
 
     col1, col2 = st.columns(2)
@@ -102,8 +117,9 @@ if submitted:
     )
     safe_doc = doc_type.lower().replace(" ", "_").replace("/", "_")
     filename = f"{safe_doc}_draft.md"
+    agent_input = merge_company(profile, notes=full_input) if profile else full_input
     with st.spinner("Drafting..."):
-        result = asyncio.run(run(full_input))
+        result = asyncio.run(run(agent_input))
 
     result_actions(markdown=result, filename=filename, position="top")
     st.markdown(result)

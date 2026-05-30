@@ -13,6 +13,10 @@ Examples:
 Writes timestamped output to <agent_folder>/tests/runs/<provider>-<date>.md.
 Compare against <agent_folder>/tests/baselines/ (or another provider's run)
 to fill out PARITY.md.
+
+Running as root (e.g. a CI / web container)? The Claude Agent SDK's default
+`bypassPermissions` is refused by the CLI under root. Set
+`KEEL_PERMISSION_MODE=default` in the environment so the run proceeds.
 """
 from __future__ import annotations
 

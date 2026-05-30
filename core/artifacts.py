@@ -149,10 +149,17 @@ def letter_html(
 
 
 def _ics_escape(text: str) -> str:
+    # Per RFC 5545 §3.1, a content line may not contain raw control
+    # characters; line breaks inside a value must be the escaped sequence
+    # ``\n``. Normalize CRLF/CR/LF (in that order) so a stray carriage
+    # return in LLM- or user-supplied text can't break out of the line and
+    # inject extra properties/VEVENTs into the calendar.
     return (
         text.replace("\\", "\\\\")
         .replace(";", "\\;")
         .replace(",", "\\,")
+        .replace("\r\n", "\\n")
+        .replace("\r", "\\n")
         .replace("\n", "\\n")
     )
 
