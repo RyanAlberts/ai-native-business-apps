@@ -1,0 +1,14 @@
+# Founding Journey — provider config
+# The flagship orchestrator. Runs incorporation → 83(b) → legal docs →
+# banking & insurance → compliance & tax, then synthesizes a Day-0 packet.
+provider: claude
+model: claude-sonnet-4-6
+auth_mode: subscription
+temperature: 0.2          # formation work should be deterministic
+max_tokens: 8192          # the synthesis step merges five outputs
+
+mcp_servers: {}
+allowed_tools: []
+
+extra:
+  max_turns: 12

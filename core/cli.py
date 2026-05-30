@@ -98,16 +98,25 @@ def _resolve(name: str, agents: dict[str, dict]) -> dict | None:
 
 
 def _print_list(agents: dict[str, dict]) -> None:
+    from .brand import CLI, banner
+
     if not agents:
         print("No agents found.")
         return
-    print(f"\n{len(agents)} agents available:\n")
+    print(f"\n{banner()}\n")
+    print(f"{len(agents)} agents available:\n")
     width = max(len(s) for s in agents) + 2
-    for short, info in sorted(agents.items()):
+    # Surface the flagship journey first, then the rest alphabetically.
+    ordered = sorted(
+        agents.items(), key=lambda kv: (kv[0] != "founding-journey", kv[0])
+    )
+    for short, info in ordered:
         marker = "🚀" if info["kind"] == "advanced" else "📂"
-        print(f"  {marker}  {short:<{width}} {info['description']}")
-    print("\nRun:  agent <name>            (Streamlit UI)")
-    print("      agent <name> --cli ...   (one-shot CLI)\n")
+        star = " ⭐" if short == "founding-journey" else ""
+        print(f"  {marker}  {short:<{width}} {info['description']}{star}")
+    print(f"\nRun:  {CLI} <name>            (Streamlit UI)")
+    print(f"      {CLI} <name> --cli ...   (one-shot CLI)")
+    print(f"\nNew here? Start with the full back office:  {CLI} founding-journey\n")
 
 
 def _pick_free_port(preferred: int = 8501, max_tries: int = 50) -> int:
@@ -225,10 +234,15 @@ def _interactive_pick(agents: dict[str, dict]) -> dict | None:
 
 
 def main(argv: list[str] | None = None) -> int:
+    from .brand import CLI, banner
+
     parser = argparse.ArgumentParser(
-        prog="agent",
-        description="Launch an AI-Native Business Apps agent.",
-        epilog="examples:\n  agent\n  agent list\n  agent incorporation\n  agent business-plan --cli \"my business idea\"",
+        prog=CLI,
+        description=banner(),
+        epilog=(
+            f"examples:\n  {CLI}\n  {CLI} list\n  {CLI} founding-journey"
+            f"\n  {CLI} incorporation\n  {CLI} business-plan --cli \"my business idea\""
+        ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("name", nargs="?", help="agent short name (or 'list')")

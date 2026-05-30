@@ -28,25 +28,7 @@ the founder can verify.
 from __future__ import annotations
 
 from core import Tool
-from core.state_portals import get_state as _get_state_portal
-
-
-def _normalize_state(raw: str) -> str | None:
-    """Accept '2-letter code' or full state name; return upper-case 2-letter
-    code or None for unknown. Uses core.state_portals as the authoritative
-    name->code map so we don't duplicate the lookup table."""
-    if not raw:
-        return None
-    key = raw.strip().upper()
-    # Direct code hit?
-    if _get_state_portal(key) is not None and len(key) == 2:
-        return key
-    # Full-name hit? get_state adds "_code" only in that branch.
-    portal = _get_state_portal(raw)
-    if portal is None:
-        return None
-    code = portal.get("_code")
-    return code if code else (key if len(key) == 2 else None)
+from core.util import state_code as _normalize_state  # shared canonical lookup
 
 
 # DBA filing jurisdiction by state. Values:

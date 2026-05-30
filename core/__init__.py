@@ -12,6 +12,17 @@ Exports:
 from .config import load_config
 from .llm import LLMClient, LLMConfig, Tool, get_llm
 from .harness import HarnessResult, ParallelHarness, SequentialHarness, Stage
+from .company import Company, Founder
+from .artifacts import (
+    Artifact,
+    ArtifactSet,
+    html_artifact,
+    ics_artifact,
+    letter_html,
+    markdown_artifact,
+    text_artifact,
+)
+from .util import normalize_state, slugify, state_code
 
 __all__ = [
     "load_config",
@@ -23,4 +34,19 @@ __all__ = [
     "ParallelHarness",
     "Stage",
     "HarnessResult",
+    # unified company spine
+    "Company",
+    "Founder",
+    # prepare-to-submit artifacts
+    "Artifact",
+    "ArtifactSet",
+    "markdown_artifact",
+    "text_artifact",
+    "html_artifact",
+    "letter_html",
+    "ics_artifact",
+    # shared helpers
+    "normalize_state",
+    "state_code",
+    "slugify",
 ]
