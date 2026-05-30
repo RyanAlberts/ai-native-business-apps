@@ -75,6 +75,8 @@ class StepResult:
     title: str
     emoji: str
     output: str
+    ok: bool = True       # False if the specialist step raised
+    error: str = ""       # short error summary when ok is False
 
 
 @dataclass
@@ -89,6 +91,11 @@ class JourneyResult:
     def final(self) -> str:
         """Alias so the CLI launcher (which prints ``.final``) works."""
         return self.packet_markdown
+
+    @property
+    def failed_steps(self) -> list[StepResult]:
+        """Steps that errored out — empty on a fully successful run."""
+        return [s for s in self.steps if not s.ok]
 
     def artifacts(self) -> ArtifactSet:
         """Bundle the prepare-to-submit deliverables for download."""
@@ -146,27 +153,70 @@ async def run_journey(
             f"{transcript}\n"
             f"## Your task in the founding journey\n{step.instruction}"
         ).strip()
-        output = await llm.complete(
-            system_prompt=step.system_prompt,
-            user_message=user_message,
-            tools=step.tools_factory() or None,
-        )
-        sr = StepResult(step.key, step.title, step.emoji, output)
+        # One specialist failing (a slow/erroring call, a flaky tool) must
+        # not sink the whole journey — the founder should still get a packet
+        # from the steps that did succeed. Capture the failure as a degraded
+        # StepResult and keep going; the transcript notes the gap so later
+        # steps and the synthesis know that section is missing.
+        try:
+            output = await llm.complete(
+                system_prompt=step.system_prompt,
+                user_message=user_message,
+                tools=step.tools_factory() or None,
+            )
+            sr = StepResult(step.key, step.title, step.emoji, output)
+            transcript += f"\n\n## Completed — {step.emoji} {step.title}\n{output}\n"
+        except Exception as exc:  # noqa: BLE001 — degrade, don't crash the run
+            err = f"{type(exc).__name__}: {exc}"
+            note = (
+                f"This step could not be completed automatically ({err}). "
+                "Re-run the journey or run this specialist agent on its own."
+            )
+            sr = StepResult(step.key, step.title, step.emoji, note, ok=False, error=err)
+            transcript += (
+                f"\n\n## Skipped — {step.emoji} {step.title} (failed)\n{note}\n"
+            )
         results.append(sr)
-        transcript += f"\n\n## Completed — {step.emoji} {step.title}\n{output}\n"
         if on_step is not None:
             await _maybe_await(on_step(sr))
 
-    # Final synthesis: one coherent packet from the five specialist outputs.
+    # Final synthesis: one coherent packet from the specialist outputs. If
+    # synthesis itself fails, fall back to a concatenation of the steps so
+    # the run still produces a usable packet instead of raising.
     synthesis_input = (
         f"{profile}\n\n# Specialist outputs to synthesize\n{transcript}"
     )
-    packet = await llm.complete(
-        system_prompt=PACKET_SYNTHESIS_PROMPT,
-        user_message=synthesis_input,
-        tools=None,
-    )
+    try:
+        packet = await llm.complete(
+            system_prompt=PACKET_SYNTHESIS_PROMPT,
+            user_message=synthesis_input,
+            tools=None,
+        )
+    except Exception as exc:  # noqa: BLE001 — fall back to a raw concatenation
+        packet = _fallback_packet(company, results, f"{type(exc).__name__}: {exc}")
+
     return JourneyResult(company=company, steps=results, packet_markdown=packet)
+
+
+def _fallback_packet(
+    company: Company, steps: list[StepResult], error: str
+) -> str:
+    """Assemble a usable packet from step outputs when synthesis fails."""
+    name = company.legal_name or company.dba or "your company"
+    parts = [
+        f"# Day-0 Formation Packet — {name}",
+        "",
+        (
+            "> ⚠️ Automatic synthesis could not complete "
+            f"({error}). Below are the raw outputs from each specialist step "
+            "that did run, in order. Re-run the journey to get the "
+            "synthesized executive summary."
+        ),
+    ]
+    for step in steps:
+        status = "" if step.ok else " (failed)"
+        parts.append(f"\n## {step.emoji} {step.title}{status}\n\n{step.output}")
+    return "\n".join(parts)
 
 
 # ── deterministic deadline calendar ───────────────────────────────────
