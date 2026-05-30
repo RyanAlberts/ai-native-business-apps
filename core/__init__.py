@@ -23,6 +23,7 @@ from .artifacts import (
     text_artifact,
 )
 from .util import normalize_state, slugify, state_code
+from .brand import DISCLAIMER, with_disclaimer
 
 __all__ = [
     "load_config",
@@ -49,4 +50,7 @@ __all__ = [
     "normalize_state",
     "state_code",
     "slugify",
+    # brand / legal disclaimer
+    "DISCLAIMER",
+    "with_disclaimer",
 ]
