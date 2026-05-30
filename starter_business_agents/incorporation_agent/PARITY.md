@@ -27,16 +27,17 @@ See `tests/golden.jsonl`.
 
 | ID | Prompt | claude | openai | gemini |
 |---|---|---|---|---|
-| g1 | Solo founder TX, bootstrapped SaaS, no VC | ✅ verified (build smoke) | not run | not run |
-| g2 | 2 cofounders CA, seed in 9mo, fintech | not run | not run | not run |
-| g3 | Solo FL, restaurant consultant, $80k yr | ✅ verified (manual) | not run | not run |
-| g4 | 3 cofounders NY, AI hardware, $200k pre-seed | not run | not run | not run |
-| g5 | Solo WY, drop-shipping, product liability | not run | not run | not run |
+| g1 | Solo founder TX, bootstrapped SaaS, no VC | ✅ baselined 2026-05-30 | not run | not run |
+| g2 | 2 cofounders CA, seed in 9mo, fintech | ✅ baselined 2026-05-30 | not run | not run |
+| g3 | Solo FL, restaurant consultant, $80k yr | ✅ baselined 2026-05-30 | not run | not run |
+| g4 | 3 cofounders NY, AI hardware, $200k pre-seed | ✅ baselined 2026-05-30 | not run | not run |
+| g5 | Solo WY, drop-shipping, product liability | ✅ baselined 2026-05-30 | not run | not run |
 
 Baseline captures:
-- `tests/baselines/claude-2026-05-30.md` — current capture (g1), taken after
-  the BOI/CTA correctness pass; the agent now states US-formed entities are
-  exempt from the FinCEN BOI report (2025 interim final rule).
+- `tests/baselines/claude-2026-05-30.md` — current capture (full 5-case
+  golden set), taken after the BOI/CTA correctness pass; the agent now
+  states US-formed entities are exempt from the FinCEN BOI report (2025
+  interim final rule).
 - `tests/baselines/claude-2026-05-12-smoke.md` — historical pre-correction
   snapshot; Texas SaaS w/ "Acme Books"
   name; verifies the new tools (state portal lookup + name-search URL) fire

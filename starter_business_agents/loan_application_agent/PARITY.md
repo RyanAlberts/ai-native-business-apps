@@ -4,7 +4,7 @@
 |---|---|
 | Path | `starter_business_agents/loan_application_agent/` |
 | Default model | claude-sonnet-4-6 |
-| Last verified | 2026-05-30 (g1 captured live after the BOI-pitfall correctness pass) |
+| Last verified | 2026-05-30 (full 5-case set captured live after the BOI-pitfall correctness pass) |
 
 ## 1. Capability parity (tools × providers)
 
@@ -21,12 +21,14 @@ For real-time SBA rate verification, enable `WebSearch` in
 | ID | Prompt | claude | openai | gemini |
 |---|---|---|---|---|
 | g1 | 2-yr LLC bakery, $280k rev, $120k for equipment | ✅ baselined 2026-05-30 | not run | not run |
-| g2 | Pre-revenue solo SaaS founder, $30k for tooling | not yet run | not run | not run |
-| g3 | Restaurant in NYC, $500k for real estate | not yet run | not run | not run |
+| g2 | Pre-revenue solo SaaS founder, $30k for tooling | ✅ baselined 2026-05-30 | not run | not run |
+| g3 | Restaurant in NYC, $500k for real estate | ✅ baselined 2026-05-30 | not run | not run |
+| g4 | Veteran-owned landscaping, rural NC, $40k equipment | ✅ baselined 2026-05-30 | not run | not run |
+| g5 | E-commerce skincare LLC (DE), $250k working capital | ✅ baselined 2026-05-30 | not run | not run |
 
-Baseline: `tests/baselines/claude-2026-05-30.md` (g1), captured live after
-the "missing the BOI deadline" pitfall was removed (US-formed entities are
-exempt under the 2025 rule). Run the full set via `python
+Baseline: `tests/baselines/claude-2026-05-30.md` (full 5-case set),
+captured live after the "missing the BOI deadline" pitfall was removed
+(US-formed entities are exempt under the 2025 rule). Re-capture via `python
 scripts/parity_run.py starter_business_agents.loan_application_agent`.
 
 ## 3. UX parity (Streamlit)
