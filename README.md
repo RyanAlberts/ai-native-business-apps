@@ -13,7 +13,7 @@
 ![Built on](https://img.shields.io/badge/built%20on-Claude%20Agent%20SDK-8A2BE2)
 ![No API key required](https://img.shields.io/badge/API%20key-not%20required-brightgreen)
 
-[🚀 Quick Start](#-quick-start) · [⚓ The Founding Journey](#-the-founding-journey) · [🆚 vs Stripe Atlas](#-vs-stripe-atlas) · [📂 Agents](#-the-agent-fleet) · [💎 Built on Claude Agent SDK](#-built-on-the-claude-agent-sdk)
+[🚀 Quick Start](#-quick-start) · [⚓ The Founding Journey](#-the-founding-journey) · [🆚 Comparison](#-vs-the-incorporation-services) · [📂 Agents](#-the-agent-fleet) · [💎 Built on Claude Agent SDK](#-built-on-the-claude-agent-sdk)
 
 </div>
 
@@ -81,22 +81,28 @@ keel founding-journey                       # structured Streamlit intake
 keel founding-journey --cli ./company.json  # or start from a saved profile
 ```
 
-## 🆚 vs Stripe Atlas
+## 🆚 vs the incorporation services
 
-|  | **Keel** | **Stripe Atlas** |
-|---|---|---|
-| Price | **$0** (runs on your Claude sub) | $500 one-time |
-| Entity types | LLC · C-Corp · S-Corp · sole prop, **any state** | DE C-Corp / LLC only |
-| 83(b) election | ✅ generates the letter + 30-day deadline calendar | ⚠️ filing assistance, C-Corp only |
-| Founding legal docs | ✅ operating agreement / bylaws, IP assignment, NDA | partial (templates) |
-| Banking & insurance plan | ✅ comparison + the policies you actually need | partners only |
-| Compliance/tax calendar | ✅ `.ics` you import | ❌ |
-| Sales-tax nexus & registrations | ✅ | ❌ |
-| You own the output & the tool | ✅ Apache-2.0, self-hosted | ❌ SaaS |
-| Works offline / your data stays local | ✅ | ❌ |
-| Extend / add your own agent | ✅ copy a folder | ❌ |
+The usual options are SaaS products that file a slice of this for a fee and
+keep you in their box. Keel is the open-source tool that does the whole Day-0
+journey and hands you the files.
+
+|  | **Keel** | **Stripe Atlas** | **LegalZoom** | **Clerky** | **Firstbase** |
+|---|---|---|---|---|---|
+| Price | **$0** (runs on your Claude sub) | $500 one-time | ~$0–$300 + state fees, upsells | ~$799+ bundle | ~$399 + $199/yr |
+| Entity types | LLC · C-Corp · S-Corp · sole prop, **any state** | DE C-Corp / LLC | LLC / corp, any state | DE C-Corp focus | LLC / C-Corp |
+| 83(b) election | ✅ letter + 30-day deadline calendar | ⚠️ assistance, C-Corp only | ❌ not offered | ✅ (paid) | ⚠️ add-on |
+| Founding legal docs | ✅ operating agreement / bylaws, IP assignment, NDA | partial templates | ⚠️ paid templates | ✅ (paid) | partial |
+| Banking & insurance plan | ✅ comparison + policies you actually need | partners only | upsell | ❌ | partner bank only |
+| Compliance / tax calendar | ✅ `.ics` you import | ❌ | ⚠️ paid registered-agent | ❌ | ⚠️ paid add-on |
+| Sales-tax nexus & registrations | ✅ | ❌ | ⚠️ paid | ❌ | ⚠️ paid |
+| You own the output & the tool | ✅ Apache-2.0, self-hosted | ❌ SaaS | ❌ SaaS | ❌ SaaS | ❌ SaaS |
+| Works offline / data stays local | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Extend / add your own agent | ✅ copy a folder | ❌ | ❌ | ❌ | ❌ |
 
 Keel isn't trying to be a registered agent or file on your behalf — it gets you **all the way to the submit button**, for free, in a tool you own.
+
+> Pricing and feature notes reflect each service's public positioning at the time of writing and change often — verify current terms on their sites. Keel's edge isn't any single feature; it's that the whole journey is open-source and yours.
 
 ## 🚀 Quick Start
 
