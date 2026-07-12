@@ -4,7 +4,7 @@
 |---|---|
 | Source | Original work (motivated by Stripe Atlas's Auto-83(b) being closed-source and formation-bundled) |
 | Default model | claude-sonnet-4-6 |
-| Last verified | 2026-05-30 (full 5-case set captured live after the TD 9779 / Form-1040 correctness pass) |
+| Last verified | 2026-07-12 (full 5-case set re-captured live after the one-election-per-person multi-founder fix) |
 
 ## 1. Capability parity (tools × providers)
 
@@ -22,16 +22,19 @@ See `tests/golden.jsonl`.
 
 | ID | Scenario | claude | openai | gemini |
 |---|---|---|---|---|
-| g1 | Solo founder, fresh DE C-Corp, FMV == price paid, ~25 days remaining | ✅ baselined 2026-05-30 | not yet run | not yet run |
-| g2 | Married-filing-jointly cofounder pair, vesting acceleration on change of control | ✅ baselined 2026-05-30 | not yet run | not yet run |
-| g3 | Grant 22 days ago — urgent (`NEAR` window) | ✅ baselined 2026-05-30 | not yet run | not yet run |
-| g4 | Grant 45 days ago — `EXPIRED`; agent must recommend §9100 path | ✅ baselined 2026-05-30 | not yet run | not yet run |
-| g5 | Non-US founder with ITIN — flag complexity, recommend specialized advice | ✅ baselined 2026-05-30 | not yet run | not yet run |
+| g1 | Solo founder, fresh DE C-Corp, FMV == price paid, ~25 days remaining | ✅ baselined 2026-07-12 | not yet run | not yet run |
+| g2 | Married-filing-jointly cofounder pair, vesting acceleration on change of control | ✅ baselined 2026-07-12 | not yet run | not yet run |
+| g3 | Grant 22 days ago — urgent (`NEAR` window) | ✅ baselined 2026-07-12 | not yet run | not yet run |
+| g4 | Grant 45 days ago — `EXPIRED`; agent must recommend §9100 path | ✅ baselined 2026-07-12 | not yet run | not yet run |
+| g5 | Non-US founder with ITIN — flag complexity, recommend specialized advice | ✅ baselined 2026-07-12 | not yet run | not yet run |
 
-Baseline: `tests/baselines/claude-2026-05-30.md` (full 5-case set),
-captured live. The post-filing checklist now correctly states you do NOT
-attach the election to Form 1040 (TD 9779, 2016); the EXPIRED-window case
-(g4) explicitly tells the founder not to attach a non-existent election.
+Baseline: `tests/baselines/claude-2026-07-12.md` (full 5-case set),
+captured live. The prompt now requires one election per PERSON, not per
+company — a separate, complete letter for each restricted-stock holder —
+so the g2 cofounder case produces two letters (one per founder), not one.
+The post-filing checklist correctly states you do NOT attach the election
+to Form 1040 (TD 9779, 2016); the EXPIRED-window case (g4) explicitly
+tells the founder not to attach a non-existent election.
 
 ## 3. UX parity (Streamlit)
 
@@ -69,7 +72,7 @@ should be lighter than agents that emit longer narratives.
 
 | Provider | Verdict |
 |---|---|
-| claude | not yet verified (scaffold only — needs end-to-end run) |
+| claude | **verified** — live 5-case golden run 2026-07-12; multi-founder case yields one letter per holder |
 | openai | not yet run |
 | gemini | not yet run |
 | xai | community-supported |

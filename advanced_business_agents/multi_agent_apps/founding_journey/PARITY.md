@@ -63,6 +63,11 @@ franchise tax 2027-03-01; valid RFC-5545, proper escaping).
 - No EIN auto-application — the packet routes the founder to the IRS portal
   (prepare-to-submit, by design).
 - Live golden runs for g1/g2 still pending.
+- The 83(b) step's `STEP_INSTRUCTIONS` were tightened on 2026-07-12 to
+  require a separate election letter per restricted-stock holder (one
+  election per person, not per company — see the 83(b) agent's PARITY.md).
+  The live baseline (`claude-2026-05-30-journey.md`) predates this change;
+  the pending g1 two-founder run will exercise it.
 
 ## 5. Verdict
 

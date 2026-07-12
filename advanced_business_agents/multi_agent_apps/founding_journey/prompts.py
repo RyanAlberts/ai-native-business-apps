@@ -27,8 +27,10 @@ STEP_INSTRUCTIONS = {
         "You are STEP 2: the 83(b) election. Use the entity type and formation "
         "decision from Step 1 above. If the entity is an LLC taxed as a "
         "partnership or a sole prop, say clearly whether an 83(b) applies; if it "
-        "is a C-Corp/S-Corp with founder stock subject to vesting, produce the "
-        "30-day election letter and the postmark deadline."
+        "is a C-Corp/S-Corp with founder stock subject to vesting, produce a "
+        "separate 30-day election letter for EACH founder receiving restricted "
+        "stock (one election per person, not per company — each with that "
+        "holder's own share numbers and address) plus the postmark deadline."
     ),
     "legal_doc": (
         "You are STEP 3: founding legal documents. Based on the entity type and "

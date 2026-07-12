@@ -40,6 +40,15 @@ project aims to follow semantic versioning once it hits 1.0.
   `scripts/dev_setup.sh` provision a `.venv` with `claude-agent-sdk`.
 
 ### Fixed
+- **One 83(b) election per person, not per company** — the 83(b)
+  specialist's `SYSTEM_PROMPT` and the journey's
+  `STEP_INSTRUCTIONS["election_83b"]` both said "the 30-day election
+  letter" (singular), so an agent following them literally drafted one
+  letter for a multi-founder company and the other founders silently
+  missed an irrevocable deadline. Both prompts now require a separate,
+  complete letter per restricted-stock holder — matching the already-fixed
+  `playbooks/02-83b-election.md` — and the agent's golden baseline was
+  re-captured live (the two-founder case g2 now yields two letters).
 - **Agents run out of the box under root** — the Claude adapter's default
   `bypassPermissions` made the CLI pass `--dangerously-skip-permissions`,
   which it refuses under root/sudo (exit 1). `_permission_mode()` now
