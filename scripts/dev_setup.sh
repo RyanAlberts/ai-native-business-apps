@@ -12,6 +12,16 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+# Founder-mode guard: fresh clones run the Founding Journey agent-natively
+# (see playbooks/) with zero Python setup — the SessionStart hook must not
+# make them sit through a pip install. Provision the venv only for
+# contributors who opted in: `.venv` already exists, or KEEL_DEV=1 is set.
+if [ ! -d .venv ] && [ "${KEEL_DEV:-0}" != "1" ]; then
+  echo "Keel: skipping dev-env setup (agent-native mode needs no Python)."
+  echo "  Working on Keel itself? Opt in once:  KEEL_DEV=1 bash scripts/dev_setup.sh"
+  exit 0
+fi
+
 if [ ! -d .venv ]; then
   python3 -m venv .venv
 fi

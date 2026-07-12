@@ -26,9 +26,12 @@
 ## ⚡ TL;DR
 
 ```bash
-pipx install git+https://github.com/RyanAlberts/ai-native-business-apps.git
-keel founding-journey
+git clone https://github.com/RyanAlberts/ai-native-business-apps.git
+cd ai-native-business-apps
+claude        # or codex, or open the folder in Cursor
 ```
+
+Then say **"start my founding journey"**. The AI agent you already have runs the whole thing from the playbooks in this repo — no Python, no pipx, no API key. (Prefer a CLI? `pipx install git+https://github.com/RyanAlberts/ai-native-business-apps.git && keel founding-journey` does the same journey.)
 
 Fill in your company **once**. Get back a complete **Day-0 Formation Packet** — entity choice, 83(b) election letter, founding legal docs, banking & insurance plan, and a compliance calendar — plus the real, ready-to-file documents. On the Claude subscription you already pay for. No API key. No SaaS bill. Apache-2.0.
 
@@ -81,6 +84,12 @@ keel founding-journey                       # structured Streamlit intake
 keel founding-journey --cli ./company.json  # or start from a saved profile
 ```
 
+No Python? Open the cloned repo with Claude Code / Codex / Cursor and say
+**"start my founding journey"** — the agent runs the same five specialists
+from [`playbooks/`](playbooks/), gated by
+[`verify/journey_gate.sh`](verify/journey_gate.sh), onto the same
+`company.json`.
+
 ## 🆚 vs the incorporation services
 
 The usual options are SaaS products that file a slice of this for a fee and
@@ -106,6 +115,36 @@ Keel isn't trying to be a registered agent or file on your behalf — it gets yo
 
 ## 🚀 Quick Start
 
+### Path 1 — Run with the AI you already have (nothing to install)
+
+If you use **Claude Code**, **Codex**, or **Cursor**, you already have
+everything Keel needs — the repo ships the whole Founding Journey as
+markdown playbooks your agent reads and executes:
+
+```bash
+git clone https://github.com/RyanAlberts/ai-native-business-apps.git
+cd ai-native-business-apps
+claude        # or codex, or open the folder in Cursor
+```
+
+Then paste one line:
+
+```
+Start my founding journey: follow the runner contract (CLAUDE.md / AGENTS.md), begin with playbooks/00-intake.md, and take me phase by phase to the Day-0 Formation Packet — checking each gate before the next phase.
+```
+
+The agent interviews you (5–10 minutes), then works through incorporation
+→ 83(b) → legal docs → banking → compliance, checking a deterministic gate
+(`verify/journey_gate.sh`) after every phase. Your packet lands in
+`formation-packet/`; your profile lives in `company.json` (both stay on
+your machine — they're git-ignored). Stopping is safe: progress saves to
+`PROGRESS.md`, and "**continue my founding journey**" picks up exactly
+where you left off.
+
+### Path 2 — The `keel` CLI (pipx)
+
+Prefer a self-driving CLI + Streamlit forms? Same journey, same files:
+
 ```bash
 pipx install git+https://github.com/RyanAlberts/ai-native-business-apps.git
 keel                      # interactive picker
@@ -113,6 +152,9 @@ keel list                 # list every agent
 keel founding-journey     # the full Day-0 back office
 keel incorporation --cli "Solo founder in Texas, SaaS for plumbers."
 ```
+
+The two paths share one `company.json`, so you can start in your agent and
+finish in the CLI (or the other way around).
 
 Prefer to develop locally?
 
@@ -171,6 +213,10 @@ core/
 agents/
 ├── starter_business_agents/   # single-task agents
 └── advanced_business_agents/  # multi-agent pipelines (incl. the Founding Journey)
+
+playbooks/          # the agent-native Founding Journey — markdown your own
+                    # AI agent executes (same prompts + data, no Python)
+verify/             # deterministic phase gates for the agent-native path
 ```
 
 Each agent folder is self-contained: `agent.py` (async `run()`), `app.py` (Streamlit), `prompts.py`, `tools.py`, `config.yaml`, `README.md`, `WALKTHROUGH.md`, `PARITY.md`, `tests/golden.jsonl`.

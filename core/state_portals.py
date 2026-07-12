@@ -117,7 +117,7 @@ STATE_PORTALS: dict[str, dict[str, str | None]] = {
         "annual_report_url": "https://corp.delaware.gov/paytaxes/",
         "registered_agent_info_url": "https://corp.delaware.gov/agents/",
         "filing_fee_articles": "$110 (Certificate of Formation for LLC) / $89 (Certificate of Incorporation for Corp)",
-        "annual_fee_approximate": "$300 LLC franchise tax flat; $175+ corp franchise tax (varies with shares)",
+        "annual_fee_approximate": "$300 LLC franchise tax flat (due June 1); $175+ corp franchise tax + annual report (due March 1, varies with shares)",
         "notes": "Delaware is the venture-track default for C-Corps because of established case law and the Court of Chancery — but for non-VC bootstrapped LLCs it usually adds cost without benefit. Foreign-LLC registration in your home state is required if you operate elsewhere.",
     },
     "FL": {

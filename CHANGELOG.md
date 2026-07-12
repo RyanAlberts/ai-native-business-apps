@@ -7,6 +7,17 @@ project aims to follow semantic versioning once it hits 1.0.
 ## [Unreleased]
 
 ### Added
+- **Agent-native Founding Journey** — clone the repo, open it with the AI
+  agent you already have (Claude Code, Codex, Cursor), say "start my
+  founding journey", and the agent runs the full journey with no Python, no
+  pipx, no custom harness: a runner contract (`CLAUDE.md` / `AGENTS.md`),
+  ordered playbooks (`playbooks/00`–`06`) over the shared `company.json`,
+  deterministic phase gates (`verify/journey_gate.sh`), and a `PROGRESS.md`
+  resume system. The playbooks reference the same single-source files the
+  Python journey composes (`prompts.py` briefs, `core/state_portals.py`,
+  the deterministic tool logic in `tools.py`), so the two paths can't drift
+  apart — and they share one `company.json`, so a founder can switch paths
+  mid-journey. The existing `keel` CLI is unchanged.
 - **Keel brand layer** (`core/brand.py`) — single source of truth for the
   product name; the `keel` CLI alongside the legacy `agent` command.
 - **Unified `Company` profile** (`core/company.py`) — one portable profile
@@ -42,7 +53,14 @@ project aims to follow semantic versioning once it hits 1.0.
 
 ### Changed
 - README rebuilt around the Keel positioning, the Founding Journey, and a
-  competitor comparison table.
+  competitor comparison table. Quick Start now leads with the agent-native
+  path ("run with the AI you already have"); pipx is the alternative.
+- `CLAUDE.md` / `AGENTS.md` are now the Founding Journey **runner
+  contract**; the contributor/repo context they used to hold moved to
+  `docs/REPO_GUIDE.md`.
+- The SessionStart dev-env hook is contributor-opt-in (`KEEL_DEV=1` or an
+  existing `.venv`), so a founder's fresh clone never pip-installs
+  anything.
 
 ## [0.1.0]
 - Initial collection: 9 starter agents + 4 advanced multi-agent pipelines,

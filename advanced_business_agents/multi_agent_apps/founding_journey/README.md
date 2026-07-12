@@ -57,6 +57,12 @@ You can also start from a saved profile:
 agent founding-journey --cli ./company.json
 ```
 
+**No Python?** The same journey runs agent-natively: open the cloned repo
+with Claude Code / Codex / Cursor and say "start my founding journey" —
+the agent follows the runner contract (repo-root `CLAUDE.md` /
+`AGENTS.md`) and the playbooks in [`playbooks/`](../../../playbooks/),
+writing the same artifacts over the same `company.json`.
+
 ## How it's built
 
 The journey **does not** call each agent's `run()` (which would spin up

@@ -40,3 +40,7 @@ ENV/
 .ruff_cache/
 htmlcov/
 .coverage
+
+# Founding Journey (agent-native) — the founder's data stays local
+company.json
+formation-packet/

@@ -1,13 +1,20 @@
 # Cursor rules — ai-native-business-apps
 
 This file is auto-loaded by Cursor as repo-wide AI context.
-Full conventions live in `AGENTS.md` and `CLAUDE.md`; this file is the
-short version.
+`AGENTS.md` / `CLAUDE.md` carry the Founding Journey **runner contract**;
+developer conventions live in `docs/REPO_GUIDE.md`. This file is the short
+version for development work.
 
 ## Repo purpose
 Hand-built, Apache-2.0 AI agents for founders bootstrapping a startup.
 Each agent automates one boring-but-necessary task (incorporation, business
 plan, legal docs, etc.). Provider-agnostic via `core.LLMClient` abstraction.
+
+## Founder mode (not development)
+
+If the human says "start my founding journey" (or similar), they're a
+founder running the product, not developing it: follow the runner contract
+in `AGENTS.md` and the playbooks in `playbooks/` — no Python setup needed.
 
 ## What I'm probably asking you to do
 
@@ -47,6 +54,6 @@ python scripts/parity_run.py <module>  # capture golden outputs
 
 ## When you're stuck
 
-Read `AGENTS.md` and `CLAUDE.md`. Read `_template/agent.py` for the
-canonical agent shape. Read `core/llm/claude.py` for the canonical
-provider adapter shape.
+Read `docs/REPO_GUIDE.md`. Read `_template/agent.py` for the canonical
+agent shape. Read `core/llm/claude.py` for the canonical provider adapter
+shape.
